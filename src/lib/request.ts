@@ -1,0 +1,52 @@
+export type RequestError = {
+  error: {
+    message: string;
+    statusCode?: number;
+  };
+};
+
+const API_HOST = process.env.API_HOST;
+
+export async function request<T extends Object>(
+  url: string,
+  init?: RequestInit
+): Promise<T | RequestError> {
+  try {
+    const res = await fetch(API_HOST + url, {
+      ...init,
+      headers: {
+        "Content-Type": "application/json",
+        ...init?.headers,
+      },
+    });
+
+    const data = (await res.json()) as T;
+
+    if (!res.ok) {
+      return {
+        error: {
+          message:
+            "message" in data ? (data.message as string) : res.statusText,
+          statusCode:
+            "statusCode" in data ? (data.statusCode as number) : res.status,
+        },
+      };
+    }
+
+    return data;
+  } catch (error) {
+    return {
+      error: {
+        message: "Failed to fetch",
+      },
+    };
+  }
+}
+
+export async function get<T extends Object>(url: string) {
+  return request<T>(url);
+}
+
+export async function post<T extends Object>(url: string, body: Object) {
+  return request<T>(url, { method: "POST", body: JSON.stringify(body) });
+}
