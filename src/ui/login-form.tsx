@@ -3,6 +3,7 @@
 import { signIn } from "@/lib/actions";
 import Link from "next/link";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 
 export default function LoginForm() {
   const [error, setError] = useState<string | null>(null);
@@ -45,12 +46,7 @@ export default function LoginForm() {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 mb-4"
-          >
-            Войти
-          </button>
+          <SubmitButton />
           <Link
             href="/sign-up"
             type="button"
@@ -61,5 +57,19 @@ export default function LoginForm() {
         </form>
       </div>
     </div>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      className="w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse mb-4"
+      disabled={pending}
+    >
+      Войти
+    </button>
   );
 }

@@ -2,6 +2,7 @@
 
 import { signUp } from "@/lib/actions";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 
 export default function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
@@ -59,14 +60,23 @@ export default function RegisterForm() {
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-          >
-            Зарегистрироваться
-          </button>
+          <SubmitButton />
         </form>
       </div>
     </div>
+  );
+}
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+
+  return (
+    <button
+      type="submit"
+      className="w-full bg-blue-500 text-white rounded-md py-2 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 disabled:bg-blue-400 disabled:animate-pulse mb-4"
+      disabled={pending}
+    >
+      Зарегистрироваться
+    </button>
   );
 }
