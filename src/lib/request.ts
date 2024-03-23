@@ -1,3 +1,5 @@
+import { getSession } from "./session";
+
 export type RequestError = {
   error: {
     message: string;
@@ -12,10 +14,13 @@ export async function request<T extends Object>(
   init?: RequestInit
 ): Promise<T | RequestError> {
   try {
+    const session = getSession();
+
     const res = await fetch(API_HOST + url, {
       ...init,
       headers: {
         "Content-Type": "application/json",
+        ...(session ? { Authorization: "Bearer " + session.access_token } : {}),
         ...init?.headers,
       },
     });
@@ -49,4 +54,8 @@ export async function get<T extends Object>(url: string) {
 
 export async function post<T extends Object>(url: string, body: Object) {
   return request<T>(url, { method: "POST", body: JSON.stringify(body) });
+}
+
+export async function remove<T extends Object>(url: string) {
+  return request<T>(url, { method: "DELETE" });
 }
