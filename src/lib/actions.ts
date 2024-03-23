@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { post } from "./request";
+import { get, post, remove } from "./request";
 import { clearSession, setSession } from "./session";
 import routes from "@/constants/routes";
 
@@ -54,4 +54,30 @@ export async function logOut() {
   clearSession();
 
   redirect(routes.signIn);
+}
+
+type QuestionDTO = {
+  id: number;
+  name: string;
+  tagIds: number[];
+};
+
+export async function getQuestions(query?: {
+  name?: string;
+  tagIds?: string;
+  limit?: string;
+  offset?: string;
+}) {
+  const url = "/questions";
+  const searchParams = new URLSearchParams(query).toString();
+
+  const data = await get<QuestionDTO[]>(
+    url + (searchParams ? `?${searchParams}` : "")
+  );
+
+  return data;
+}
+
+export async function deleteQuestion(id: number) {
+  return await remove(`/questions/${id}`);
 }
