@@ -78,6 +78,15 @@ export async function getQuestions(query?: {
   return data;
 }
 
+export async function addQuestion(newQuestion: {
+  name: string;
+  tagIds: number[];
+}) {
+  // TODO Добавить тип для ответа
+  return post("/questions", newQuestion);
+}
+
 export async function deleteQuestion(id: number) {
-  return await remove(`/questions/${id}`);
+  // TODO Добавить тип для ответа
+  return remove(`/questions/${id}`);
 }
