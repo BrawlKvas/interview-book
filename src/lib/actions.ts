@@ -65,8 +65,8 @@ type QuestionDTO = {
 export async function getQuestions(query?: {
   name?: string;
   tagIds?: string;
-  limit?: string;
-  offset?: string;
+  page?: string;
+  pageSize?: string;
 }) {
   const url = "/questions";
   const searchParams = new URLSearchParams(query).toString();
@@ -94,8 +94,8 @@ type TagDTO = {
 
 export async function getTags(query: {
   name?: string;
-  limit?: string;
-  offset?: string;
+  page?: string;
+  pageSize?: string;
 }) {
   const url = "/tags";
   const searchParams = new URLSearchParams(query).toString();

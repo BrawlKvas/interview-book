@@ -18,8 +18,8 @@ export default function SearchTags({ className }: SearchTagsProps) {
 
     const res = await getTags({
       name: e.target.value,
-      limit: "5",
-      offset: "0",
+      page: "1",
+      pageSize: "5",
     });
 
     if (!("error" in res)) {
