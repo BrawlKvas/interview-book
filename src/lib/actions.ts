@@ -71,11 +71,7 @@ export async function getQuestions(query?: {
   const url = "/questions";
   const searchParams = new URLSearchParams(query).toString();
 
-  const data = await get<QuestionDTO[]>(
-    url + (searchParams ? `?${searchParams}` : "")
-  );
-
-  return data;
+  return get<QuestionDTO[]>(url + (searchParams ? `?${searchParams}` : ""));
 }
 
 export async function addQuestion(newQuestion: {
@@ -89,4 +85,20 @@ export async function addQuestion(newQuestion: {
 export async function deleteQuestion(id: number) {
   // TODO Добавить тип для ответа
   return remove(`/questions/${id}`);
+}
+
+type TagDTO = {
+  id: number;
+  name: string;
+};
+
+export async function getTags(query: {
+  name?: string;
+  limit?: string;
+  offset?: string;
+}) {
+  const url = "/tags";
+  const searchParams = new URLSearchParams(query).toString();
+
+  return get<TagDTO[]>(url + (searchParams ? `?${searchParams}` : ""));
 }

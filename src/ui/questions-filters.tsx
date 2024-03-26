@@ -5,6 +5,8 @@
 import dynamic from "next/dynamic";
 import Tag from "./tag";
 import { useState } from "react";
+import Input from "./input";
+import SearchTags from "./SearchTags";
 
 const Modal = dynamic(() => import("./modal"), { ssr: false });
 
@@ -13,16 +15,13 @@ export default function QuestionsFilters() {
 
   return (
     <div className="flex mb-4">
-      <input
+      <Input
         type="text"
         placeholder="Поиск по тексту вопроса"
-        className="w-1/3 p-2 mr-2 border border-gray-300 rounded"
+        className="w-1/3 mr-2"
       />
-      <input
-        type="text"
-        placeholder="Поиск по тегу вопроса"
-        className="w-1/3 p-2 border border-gray-300 rounded"
-      />
+      <SearchTags className="w-1/3" />
+
       <button
         className="ml-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         onClick={() => setIsOpen(true)}
@@ -53,7 +52,7 @@ export default function QuestionsFilters() {
             className="w-full border rounded-md p-2"
           />
           <div className="mt-4 flex gap-2">
-            <Tag text="React" />
+            <Tag text="React" onDelete={() => console.log("DELETE")} />
             <Tag text="JavaScript" />
           </div>
         </div>
