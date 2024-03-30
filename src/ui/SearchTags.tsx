@@ -4,6 +4,7 @@ import Autocomplete, {
   AutocompleteOption,
 } from "./autocomplete";
 import { getTags } from "@/lib/actions";
+import { isRequestError } from "@/lib/utils";
 
 export type SearchTagsProps = {
   className?: string;
@@ -22,7 +23,7 @@ export default function SearchTags({ className }: SearchTagsProps) {
       pageSize: "5",
     });
 
-    if (!("error" in res)) {
+    if (!isRequestError(res)) {
       setOptions(res.map((el) => ({ label: el.name, value: String(el.id) })));
     }
 

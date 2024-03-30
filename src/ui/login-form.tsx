@@ -1,6 +1,7 @@
 "use client";
 
 import { signIn } from "@/lib/actions";
+import { isRequestError } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
@@ -11,7 +12,7 @@ export default function LoginForm() {
   const handleSubmit = async (formData: FormData) => {
     const res = await signIn(formData);
 
-    setError("error" in res ? res.error.message : null);
+    setError(isRequestError(res) ? res.error.message : null);
   };
 
   return (

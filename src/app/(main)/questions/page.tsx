@@ -1,6 +1,7 @@
 import QuestionsList from "@/ui/questions-list";
 import { getQuestions } from "@/lib/actions";
 import QuestionsFilters from "@/ui/questions-filters";
+import { isRequestError } from "@/lib/utils";
 
 export default async function Page({
   searchParams,
@@ -14,7 +15,7 @@ export default async function Page({
 }) {
   const questions = await getQuestions(searchParams);
 
-  if ("error" in questions) {
+  if (isRequestError(questions)) {
     return <h1>Load error</h1>;
   }
 

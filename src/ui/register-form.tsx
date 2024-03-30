@@ -1,6 +1,7 @@
 "use client";
 
 import { signUp } from "@/lib/actions";
+import { isRequestError } from "@/lib/utils";
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
 
@@ -10,7 +11,7 @@ export default function RegisterForm() {
   const handleSubmit = async (formData: FormData) => {
     const res = await signUp(formData);
 
-    setError("error" in res ? res.error.message : null);
+    setError(isRequestError(res) ? res.error.message : null);
   };
 
   return (
