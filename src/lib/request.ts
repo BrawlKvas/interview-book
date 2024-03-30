@@ -7,7 +7,9 @@ export type RequestError = {
   };
 };
 
-const API_HOST = process.env.API_HOST;
+const API_HOST = process.env.USE_MOCKS
+  ? process.env.SERVER_MOCKS_HOST
+  : process.env.API_HOST;
 
 export async function request<T extends Object>(
   url: string,
