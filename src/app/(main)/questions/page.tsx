@@ -14,25 +14,14 @@ export default async function Page({
 }) {
   const questions = await getQuestions(searchParams);
 
-  console.log(questions);
-
-  const mocks = [
-    {
-      id: 1,
-      name: "В чем разница между var и let?",
-      tagIds: [1, 2, 3],
-    },
-    {
-      id: 2,
-      name: "Сколько стоит литр томатного сока?",
-      tagIds: [10, 9],
-    },
-  ];
+  if ("error" in questions) {
+    return <h1>Load error</h1>;
+  }
 
   return (
     <>
       <QuestionsFilters />
-      <QuestionsList questions={mocks} />
+      <QuestionsList questions={questions} />
     </>
   );
 }

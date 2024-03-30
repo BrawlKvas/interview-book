@@ -59,7 +59,7 @@ export async function logOut() {
 type QuestionDTO = {
   id: number;
   name: string;
-  tagIds: number[];
+  tags: { id: number; name: string }[];
 };
 
 export async function getQuestions(query?: {
