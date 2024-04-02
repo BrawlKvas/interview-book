@@ -58,6 +58,10 @@ export async function post<T extends Object>(url: string, body: Object) {
   return request<T>(url, { method: "POST", body: JSON.stringify(body) });
 }
 
+export async function patch<T extends Object>(url: string, body: Object) {
+  return request<T>(url, { method: "PATCH", body: JSON.stringify(body) });
+}
+
 export async function remove<T extends Object>(url: string) {
   return request<T>(url, { method: "DELETE" });
 }

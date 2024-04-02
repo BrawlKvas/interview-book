@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { get, post, remove } from "./request";
+import { get, post, remove, patch } from "./request";
 import { clearSession, setSession } from "./session";
 import routes from "@/constants/routes";
 
@@ -87,12 +87,21 @@ export async function deleteQuestion(id: number) {
   return remove(`/questions/${id}`);
 }
 
+export async function updateQuestion(newQuestion: {
+  id: number;
+  name?: string;
+  tagIds?: number[];
+}) {
+  // TODO Добавить тип для ответа
+  return patch("/questions", newQuestion);
+}
+
 type TagDTO = {
   id: number;
   name: string;
 };
 
-export async function getTags(query: {
+export async function getTags(query?: {
   name?: string;
   page?: string;
   pageSize?: string;
@@ -101,4 +110,12 @@ export async function getTags(query: {
   const searchParams = new URLSearchParams(query).toString();
 
   return get<TagDTO[]>(url + (searchParams ? `?${searchParams}` : ""));
+}
+
+export async function addTag(name: string) {
+  return post<TagDTO>("/tags", { name });
+}
+
+export async function getTagById(id: number) {
+  return get<TagDTO>(`/tags/${id}`);
 }
