@@ -2,7 +2,43 @@ const questions = require("../data/questions");
 
 function registerHandler(app) {
   app.get("/questions", (req, res) => {
-    res.json(questions);
+    const { name = "" } = req.query;
+
+    // TODO Добавить обработку tags
+    res.json(questions.filter((question) => question.name.includes(name)));
+  });
+
+  app.post("/questions", (req, res) => {
+    const { name = "", tags = [] } = req.body;
+
+    const newQuestions = {
+      id: questions[questions.length - 1].id + 1,
+      name,
+      tags,
+    };
+
+    res.json(newQuestions);
+  });
+
+  app.delete("/questions/:id", (req, res) => {
+    const { id } = req.params;
+
+    const index = questions.findIndex((question) => question.id === +id);
+
+    questions.splice(index, 1);
+
+    res.json({});
+  });
+
+  app.patch("/questions", (req, res) => {
+    const { id, name, tags } = req.body;
+
+    const question = questions.find((question) => question.id === +id);
+
+    question.name = name;
+    question.tags = tags;
+
+    res.json({});
   });
 }
 
