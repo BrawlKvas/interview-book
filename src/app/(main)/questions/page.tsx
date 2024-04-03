@@ -1,6 +1,6 @@
 import QuestionsList from "@/ui/questions-list";
-import { getQuestions } from "@/lib/actions";
-import QuestionsFilters from "@/ui/questions-filters";
+import { TagDTO, getQuestions, getTagById } from "@/lib/actions";
+import QuestionsFilters from "@/ui/question-filters";
 import { isRequestError } from "@/lib/utils";
 
 export default async function Page({
@@ -8,12 +8,20 @@ export default async function Page({
 }: {
   searchParams?: {
     name?: string;
-    tagIds?: string;
-    limit?: string;
-    offset?: string;
+    tags?: string;
+    page?: string;
+    pageSize?: string;
   };
 }) {
   const questions = await getQuestions(searchParams);
+
+  const tagIds = searchParams?.tags?.split(",");
+
+  const tags = tagIds
+    ? ((await Promise.all(tagIds.map((tagId) => getTagById(+tagId))).then(
+        (res) => res.filter((el) => !isRequestError(el))
+      )) as TagDTO[])
+    : [];
 
   if (isRequestError(questions)) {
     return <h1>Load error</h1>;
@@ -21,7 +29,7 @@ export default async function Page({
 
   return (
     <>
-      <QuestionsFilters />
+      <QuestionsFilters selectedTags={tags} />
       <QuestionsList questions={questions} />
     </>
   );

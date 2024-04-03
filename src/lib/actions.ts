@@ -64,7 +64,7 @@ type QuestionDTO = {
 
 export async function getQuestions(query?: {
   name?: string;
-  tagIds?: string;
+  tags?: string;
   page?: string;
   pageSize?: string;
 }) {
@@ -96,7 +96,7 @@ export async function updateQuestion(newQuestion: {
   return patch("/questions", newQuestion);
 }
 
-type TagDTO = {
+export type TagDTO = {
   id: number;
   name: string;
 };
