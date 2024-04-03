@@ -3,9 +3,15 @@ const questions = require("../data/questions");
 function registerHandler(app) {
   app.get("/questions", (req, res) => {
     const { name = "" } = req.query;
+    const tags = req.query.tags ? req.query.tags.split(",") : null;
 
-    // TODO Добавить обработку tags
-    res.json(questions.filter((question) => question.name.includes(name)));
+    res.json(
+      questions.filter(
+        (question) =>
+          question.name.includes(name) &&
+          (!tags || question.tags.some((tag) => tags.includes(String(tag.id))))
+      )
+    );
   });
 
   app.post("/questions", (req, res) => {
