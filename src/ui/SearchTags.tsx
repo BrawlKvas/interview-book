@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Autocomplete, {
   AutocompleteProps,
   AutocompleteOption,
@@ -8,26 +8,41 @@ import { isRequestError } from "@/lib/utils";
 
 export type SearchTagsProps = {
   className?: string;
+  onSelect?: (tagId: number) => void;
 };
 
-export default function SearchTags({ className }: SearchTagsProps) {
+export default function SearchTags({ className, onSelect }: SearchTagsProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
 
-  const handleChange: AutocompleteProps["onChange"] = async (e) => {
-    setIsLoading(true);
+  useEffect(() => {
+    const f = async () => {
+      setIsLoading(true);
 
-    const res = await getTags({
-      name: e.target.value,
-      page: "1",
-      pageSize: "5",
-    });
+      const res = await getTags({
+        name: inputValue,
+        page: "1",
+        pageSize: "5",
+      });
 
-    if (!isRequestError(res)) {
-      setOptions(res.map((el) => ({ label: el.name, value: String(el.id) })));
-    }
+      if (!isRequestError(res)) {
+        setOptions(res.map((el) => ({ label: el.name, value: String(el.id) })));
+      }
 
-    setIsLoading(false);
+      setIsLoading(false);
+    };
+
+    f();
+  }, [inputValue]);
+
+  const handleChange: AutocompleteProps["onChange"] = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSelect: AutocompleteProps["onSelect"] = (value) => {
+    setInputValue("");
+    onSelect?.(+value);
   };
 
   return (
@@ -37,7 +52,9 @@ export default function SearchTags({ className }: SearchTagsProps) {
       className={className}
       options={options}
       isLoading={isLoading}
+      value={inputValue}
       onChange={handleChange}
+      onSelect={handleSelect}
     />
   );
 }
