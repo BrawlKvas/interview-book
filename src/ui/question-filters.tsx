@@ -72,6 +72,7 @@ export default function QuestionFilters({
           placeholder="Поиск по тексту вопроса"
           className="w-1/3 mr-2"
           onChange={handleQuestionNameChange}
+          defaultValue={searchParams.get("name")?.toString()}
         />
         <SearchTags className="w-1/3" onSelect={handleTagSelect} />
 
