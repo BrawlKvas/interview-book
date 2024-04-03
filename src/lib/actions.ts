@@ -62,12 +62,16 @@ type QuestionDTO = {
   tags: { id: number; name: string }[];
 };
 
-export async function getQuestions(query?: {
-  name?: string;
-  tags?: string;
-  page?: string;
-  pageSize?: string;
-}) {
+export async function getQuestions(
+  query: {
+    name?: string;
+    tags?: string;
+    page?: string;
+    pageSize?: string;
+  } = {}
+) {
+  query.tags = query.tags || "[]"; // Странная штука для бэкенда
+
   const url = "/questions";
   const searchParams = new URLSearchParams(query).toString();
 
