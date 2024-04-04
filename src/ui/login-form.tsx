@@ -50,7 +50,7 @@ export default function LoginForm() {
         <Link
           href="/sign-up"
           type="button"
-          className="w-full text-center bg-gray-200 text-gray-800 rounded-md py-2 hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
+          className="block w-full text-center bg-gray-200 text-gray-800 rounded-md py-2 hover:bg-gray-300 focus:outline-none focus:bg-gray-300"
         >
           Регистрация
         </Link>
