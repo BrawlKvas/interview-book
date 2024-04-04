@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteQuestion } from "@/lib/actions";
 import QuestionCard from "./question-card";
 
 export type QuestionsListProps = {
@@ -19,7 +20,7 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
           text={name}
           tags={tags.map((tag) => tag.name)}
           onClick={() => console.log("Click " + id)}
-          onDelete={() => console.log("Delete " + id)}
+          onDelete={() => deleteQuestion(id)}
         />
       ))}
     </div>

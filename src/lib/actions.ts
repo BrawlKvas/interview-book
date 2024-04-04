@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { get, post, remove, patch } from "./request";
 import { clearSession, setSession } from "./session";
 import routes from "@/constants/routes";
+import { revalidatePath } from "next/cache";
 
 export async function signIn(formData: FormData) {
   const login = formData.get("username") as string;
@@ -88,7 +89,12 @@ export async function addQuestion(newQuestion: {
 
 export async function deleteQuestion(id: number) {
   // TODO Добавить тип для ответа
-  return remove(`/questions/${id}`);
+  const res = await remove(`/questions/${id}`);
+
+  revalidatePath("/questions");
+  redirect("/questions");
+
+  return res;
 }
 
 export async function updateQuestion(newQuestion: {
