@@ -84,17 +84,18 @@ export async function addQuestion(newQuestion: {
   tagIds: number[];
 }) {
   // TODO Добавить тип для ответа
-  return post("/questions", newQuestion);
+  await post("/questions", newQuestion);
+
+  revalidatePath("/questions");
+  redirect("/questions");
 }
 
 export async function deleteQuestion(id: number) {
   // TODO Добавить тип для ответа
-  const res = await remove(`/questions/${id}`);
+  await remove(`/questions/${id}`);
 
   revalidatePath("/questions");
   redirect("/questions");
-
-  return res;
 }
 
 export async function updateQuestion(newQuestion: {

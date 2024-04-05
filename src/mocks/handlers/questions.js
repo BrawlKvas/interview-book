@@ -1,4 +1,5 @@
 const questions = require("../data/questions");
+const tags = require("../data/tags");
 
 function registerHandler(app) {
   app.get("/questions", (req, res) => {
@@ -15,13 +16,15 @@ function registerHandler(app) {
   });
 
   app.post("/questions", (req, res) => {
-    const { name = "", tags = [] } = req.body;
+    const { name = "", tagIds = [] } = req.body;
 
     const newQuestions = {
       id: questions[questions.length - 1].id + 1,
       name,
-      tags,
+      tags: tagIds.map((tagId) => tags.find((tag) => tag.id === tagId)),
     };
+
+    questions.push(newQuestions);
 
     res.json(newQuestions);
   });

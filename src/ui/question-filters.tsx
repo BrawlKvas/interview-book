@@ -3,9 +3,10 @@
 import { ChangeEventHandler, useState } from "react";
 import Input from "./input";
 import SearchTags, { SearchTagsProps } from "./SearchTags";
-import CreateQuestionModal from "./create-question-modal";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Tag from "./tag";
+import QuestionModal, { QuestionModalProps } from "./question-modal";
+import { addQuestion } from "@/lib/actions";
 
 type QuestionFiltersProps = {
   selectedTags: { id: number; name: string }[];
@@ -64,6 +65,13 @@ export default function QuestionFilters({
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const handleAddQuestion: QuestionModalProps["onSubmit"] = ({
+    text,
+    tags,
+  }) => {
+    addQuestion({ name: text, tagIds: tags });
+  };
+
   return (
     <div className="mb-4">
       <div className="flex">
@@ -83,8 +91,10 @@ export default function QuestionFilters({
           Добавить вопрос
         </button>
 
-        <CreateQuestionModal
+        <QuestionModal
+          btnText="Добавить"
           isOpen={isOpenModal}
+          onSubmit={handleAddQuestion}
           onClose={() => setIsOpenModal(false)}
         />
       </div>
