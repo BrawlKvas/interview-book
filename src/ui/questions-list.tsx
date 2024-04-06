@@ -5,6 +5,7 @@ import QuestionCard from "./question-card";
 import QuestionModal, { QuestionModalProps } from "./question-modal";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import EmptyPlate from "./empty-plate";
 
 export type QuestionsListProps = {
   questions: QuestionDTO[];
@@ -33,6 +34,10 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
     await deleteQuestion(id);
     replace(`/questions?${searchParams.toString()}`);
   };
+
+  if (questions.length === 0) {
+    return <EmptyPlate />;
+  }
 
   return (
     <div className="grid gap-4">
