@@ -18,8 +18,6 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
     null
   );
 
-  console.log("RENDER");
-
   const handleEditQuestion: QuestionModalProps["onSubmit"] = ({
     text,
     tags,
