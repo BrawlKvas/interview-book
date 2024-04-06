@@ -70,6 +70,7 @@ export default function QuestionFilters({
     tags,
   }) => {
     addQuestion({ name: text, tagIds: tags });
+    setIsOpenModal(false);
   };
 
   return (
@@ -77,7 +78,7 @@ export default function QuestionFilters({
       <div className="flex">
         <Input
           type="text"
-          placeholder="Поиск по тексту вопроса"
+          placeholder="Название вопроса"
           className="w-1/3 mr-2"
           onChange={handleQuestionNameChange}
           defaultValue={searchParams.get("name")?.toString()}

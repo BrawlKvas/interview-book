@@ -9,7 +9,7 @@ const questions = [
     name: "Как оптимизировать загрузку приложения",
     tags: [
       { id: 1, name: "Javascript" },
-      { id: 1, name: "Оптимизация" },
+      { id: 2, name: "React" },
     ],
   },
 ];

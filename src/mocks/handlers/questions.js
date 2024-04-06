@@ -40,12 +40,12 @@ function registerHandler(app) {
   });
 
   app.patch("/questions", (req, res) => {
-    const { id, name, tags } = req.body;
+    const { id, name, tagIds } = req.body;
 
     const question = questions.find((question) => question.id === +id);
 
     question.name = name;
-    question.tags = tags;
+    question.tags = tagIds.map((tagId) => tags.find((tag) => tag.id === tagId));
 
     res.json({});
   });

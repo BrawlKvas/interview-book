@@ -57,7 +57,7 @@ export async function logOut() {
   redirect(routes.signIn);
 }
 
-type QuestionDTO = {
+export type QuestionDTO = {
   id: number;
   name: string;
   tags: { id: number; name: string }[];
@@ -104,7 +104,10 @@ export async function updateQuestion(newQuestion: {
   tagIds?: number[];
 }) {
   // TODO Добавить тип для ответа
-  return patch("/questions", newQuestion);
+  patch("/questions", newQuestion);
+
+  revalidatePath("/questions");
+  redirect("/questions");
 }
 
 export type TagDTO = {
