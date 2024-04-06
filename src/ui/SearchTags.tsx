@@ -3,18 +3,20 @@ import Autocomplete, {
   AutocompleteProps,
   AutocompleteOption,
 } from "./autocomplete";
-import { getTags } from "@/lib/actions";
+import { addTag, getTags } from "@/lib/actions";
 import { isRequestError } from "@/lib/utils";
 
 export type SearchTagsProps = {
   className?: string;
   disabled?: boolean;
+  isAllowCreate?: boolean;
   onSelect?: (tagId: number) => void;
 };
 
 export default function SearchTags({
   className,
   disabled,
+  isAllowCreate,
   onSelect,
 }: SearchTagsProps) {
   const [isLoading, setIsLoading] = useState(false);
@@ -32,22 +34,40 @@ export default function SearchTags({
       });
 
       if (!isRequestError(res)) {
-        setOptions(res.map((el) => ({ label: el.name, value: String(el.id) })));
+        const hasExactMatch = res.some((tag) => tag.name === inputValue);
+        const newOptions = res.map((el) => ({
+          label: el.name,
+          value: String(el.id),
+        }));
+
+        if (isAllowCreate && !hasExactMatch && inputValue) {
+          newOptions.unshift({
+            label: `Создать тег "${inputValue}"`,
+            value: "create",
+          });
+        }
+
+        setOptions(newOptions);
       }
 
       setIsLoading(false);
     };
 
     f();
-  }, [inputValue]);
+  }, [inputValue, isAllowCreate]);
 
   const handleChange: AutocompleteProps["onChange"] = (e) => {
     setInputValue(e.target.value);
   };
 
-  const handleSelect: AutocompleteProps["onSelect"] = (value) => {
+  const handleSelect: AutocompleteProps["onSelect"] = async (value) => {
     setInputValue("");
-    onSelect?.(+value);
+
+    if (value === "create") {
+      await addTag(inputValue);
+    } else {
+      onSelect?.(+value);
+    }
   };
 
   return (

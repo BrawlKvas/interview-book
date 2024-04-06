@@ -103,6 +103,7 @@ export default function QuestionModal({
             className="w-full"
             onSelect={handleSelectTag}
             disabled={isLoading}
+            isAllowCreate={true}
           />
           <div className="mt-4 flex gap-2 h-8 items-center">
             {tags.map((tag) => (
