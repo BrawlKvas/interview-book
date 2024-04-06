@@ -95,7 +95,6 @@ export async function deleteQuestion(id: number) {
   await remove(`/questions/${id}`);
 
   revalidatePath("/questions");
-  redirect("/questions");
 }
 
 export async function updateQuestion(newQuestion: {

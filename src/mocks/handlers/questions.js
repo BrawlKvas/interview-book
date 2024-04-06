@@ -19,7 +19,7 @@ function registerHandler(app) {
     const { name = "", tagIds = [] } = req.body;
 
     const newQuestions = {
-      id: questions[questions.length - 1].id + 1,
+      id: questions[questions.length - 1]?.id + 1 || 1,
       name,
       tags: tagIds.map((tagId) => tags.find((tag) => tag.id === tagId)),
     };
