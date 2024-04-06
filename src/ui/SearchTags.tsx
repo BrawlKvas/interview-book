@@ -8,10 +8,15 @@ import { isRequestError } from "@/lib/utils";
 
 export type SearchTagsProps = {
   className?: string;
+  disabled?: boolean;
   onSelect?: (tagId: number) => void;
 };
 
-export default function SearchTags({ className, onSelect }: SearchTagsProps) {
+export default function SearchTags({
+  className,
+  disabled,
+  onSelect,
+}: SearchTagsProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState<AutocompleteOption[]>([]);
@@ -48,11 +53,12 @@ export default function SearchTags({ className, onSelect }: SearchTagsProps) {
   return (
     <Autocomplete
       type="search"
-      placeholder="Поиск по тегу вопроса"
+      placeholder="Название тега"
       className={className}
       options={options}
       isLoading={isLoading}
       value={inputValue}
+      disabled={disabled}
       onChange={handleChange}
       onSelect={handleSelect}
     />

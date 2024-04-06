@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Input, { InputProps } from "./input";
 import clsx from "clsx";
 
@@ -17,16 +17,24 @@ export default function Autocomplete({
   isLoading,
   options,
   className,
+  disabled,
   onSelect,
   ...rest
 }: AutocompleteProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (disabled && isOpen) {
+      setIsOpen(false);
+    }
+  }, [isOpen, disabled]);
 
   return (
     <div className={clsx("inline-block relative", className)}>
       <Input
         {...rest}
         className="w-full"
+        disabled={disabled}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
       />

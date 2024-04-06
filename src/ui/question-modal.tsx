@@ -4,6 +4,7 @@ import { FormEventHandler, useEffect, useRef, useState } from "react";
 import { TagDTO, getTagById } from "@/lib/actions";
 import SearchTags, { SearchTagsProps } from "./SearchTags";
 import { isRequestError } from "@/lib/utils";
+import Spinner from "./spinner";
 
 const Modal = dynamic(() => import("./modal"), { ssr: false });
 
@@ -27,6 +28,7 @@ export default function QuestionModal({
 }: QuestionModalProps) {
   const textArea = useRef<HTMLTextAreaElement>(null);
   const [tags, setTags] = useState<TagDTO[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
@@ -36,6 +38,8 @@ export default function QuestionModal({
 
   useEffect(() => {
     const f = async () => {
+      setIsLoading(true);
+
       const res = initialValue.tags
         ? ((await Promise.all(
             initialValue.tags.map((tagId) => getTagById(+tagId))
@@ -43,6 +47,7 @@ export default function QuestionModal({
         : [];
 
       setTags(res);
+      setIsLoading(false);
     };
 
     f();
@@ -57,11 +62,15 @@ export default function QuestionModal({
       return;
     }
 
+    setIsLoading(true);
+
     const res = await getTagById(tagId);
 
     if (!isRequestError(res)) {
       setTags((prev) => [...prev, res]);
     }
+
+    setIsLoading(false);
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -71,7 +80,6 @@ export default function QuestionModal({
     const tagIds = tags.map((tag) => tag.id);
 
     onSubmit?.({ text, tags: tagIds });
-    onClose?.();
   };
 
   return (
@@ -91,8 +99,12 @@ export default function QuestionModal({
         </div>
         <div className="mt-4">
           <label className="block mb-2">Теги:</label>
-          <SearchTags className="w-full" onSelect={handleSelectTag} />
-          <div className="mt-4 flex gap-2">
+          <SearchTags
+            className="w-full"
+            onSelect={handleSelectTag}
+            disabled={isLoading}
+          />
+          <div className="mt-4 flex gap-2 h-8 items-center">
             {tags.map((tag) => (
               <Tag
                 text={tag.name}
@@ -100,6 +112,7 @@ export default function QuestionModal({
                 onDelete={() => handleDeleteTag(tag.id)}
               />
             ))}
+            {isLoading && <Spinner />}
           </div>
         </div>
         <div className="mt-4 flex justify-end">
