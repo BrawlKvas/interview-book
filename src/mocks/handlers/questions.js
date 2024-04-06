@@ -4,7 +4,7 @@ const tags = require("../data/tags");
 function registerHandler(app) {
   app.get("/questions", (req, res) => {
     const { name = "" } = req.query;
-    const tags = req.query.tags !== "[]" ? req.query.tags.split(",") : null;
+    const tags = req.query.tags ? req.query.tags.split(",") : null;
 
     res.json(
       questions.filter(

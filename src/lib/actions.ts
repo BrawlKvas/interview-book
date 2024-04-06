@@ -71,8 +71,6 @@ export async function getQuestions(
     pageSize?: string;
   } = {}
 ) {
-  query.tags = query.tags || "[]"; // Странная штука для бэкенда
-
   const url = "/questions";
   const searchParams = new URLSearchParams(query).toString();
 
