@@ -130,3 +130,19 @@ export async function addTag(name: string) {
 export async function getTagById(id: number) {
   return get<TagDTO>(`/tags/${id}`);
 }
+
+export type CandidateDTO = {
+  id: string;
+  name: string;
+  surname: string;
+  specialty: string;
+  grade: string;
+  salary: string;
+  experience: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export async function getCandidates() {
+  return get<CandidateDTO[]>("/candidates");
+}
