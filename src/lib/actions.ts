@@ -132,7 +132,7 @@ export async function getTagById(id: number) {
 }
 
 export type CandidateDTO = {
-  id: string;
+  id: number;
   name: string;
   surname: string;
   specialty: string;
@@ -145,4 +145,11 @@ export type CandidateDTO = {
 
 export async function getCandidates() {
   return get<CandidateDTO[]>("/candidates");
+}
+
+export async function deleteCandidate(id: number) {
+  await remove(`/candidates/${id}`);
+
+  revalidatePath("/candidates");
+  redirect("/candidates");
 }

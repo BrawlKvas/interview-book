@@ -1,6 +1,6 @@
 "use client";
 
-import { CandidateDTO } from "@/lib/actions";
+import { CandidateDTO, deleteCandidate } from "@/lib/actions";
 import CandidateCard from "./candidate-card";
 
 export type CandidatesListProps = {
@@ -22,7 +22,7 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
             experience={candidate.experience}
             key={candidate.id}
             onClick={() => {}}
-            onDelete={() => {}}
+            onDelete={() => deleteCandidate(candidate.id)}
           />
         ))}
       </div>
