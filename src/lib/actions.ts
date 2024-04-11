@@ -147,6 +147,33 @@ export async function getCandidates() {
   return get<CandidateDTO[]>("/candidates");
 }
 
+export async function addCandidate(candidate: {
+  name: string;
+  surname: string;
+  specialty: string;
+  grade: string;
+  experience: string;
+}) {
+  await post<CandidateDTO>("/candidates", candidate);
+
+  revalidatePath("/candidates");
+  redirect("/candidates");
+}
+
+export async function updateCandidate(candidate: {
+  id: number;
+  name: string;
+  surname: string;
+  specialty: string;
+  grade: string;
+  experience: string;
+}) {
+  await patch<CandidateDTO>("/candidates", candidate);
+
+  revalidatePath("/candidates");
+  redirect("/candidates");
+}
+
 export async function deleteCandidate(id: number) {
   await remove(`/candidates/${id}`);
 
