@@ -11,7 +11,7 @@ export function setSession(tokens: SessionData) {
   cookies().set(SESSION_COOKIE_KEY, JSON.stringify(tokens), {
     path: "/",
     httpOnly: true,
-    maxAge: 24 * 60 * 60 * 1000,
+    maxAge: 60 * 30, // 30 min
     sameSite: "strict",
   });
 }
