@@ -5,6 +5,7 @@ import { get, post, remove, patch } from "./request";
 import { clearSession, setSession } from "./session";
 import routes from "@/constants/routes";
 import { revalidatePath } from "next/cache";
+import { isRequestError } from "./utils";
 
 /* AUTH */
 export async function signIn(formData: FormData) {
@@ -219,6 +220,22 @@ export async function getTemplates(query?: {
 
 export async function getTemplateById(id: string) {
   return get<TemplateWithQuestionsDTO>(`/template/${id}`);
+}
+
+export async function addTemplate(name: string) {
+  const templateId = await post<string>(
+    "/template",
+    { name, isPublic: true },
+    { parseRule: "text" }
+  );
+
+  revalidatePath("/templates");
+
+  if (!isRequestError(templateId)) {
+    redirect(`/templates/${templateId}`);
+  } else {
+    redirect(`templates`);
+  }
 }
 
 export async function deleteTemplate(id: string) {

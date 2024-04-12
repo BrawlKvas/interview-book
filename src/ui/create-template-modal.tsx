@@ -1,6 +1,7 @@
 import dynamic from "next/dynamic";
 import Input from "./input";
 import { FormEventHandler } from "react";
+import { addTemplate } from "@/lib/actions";
 
 const Modal = dynamic(() => import("./modal"), { ssr: false });
 
@@ -15,6 +16,8 @@ export default function CreateTemplateModal({
 }: CreateTemplateModalProps) {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
+
+    addTemplate(e.currentTarget.newTemplateName.value);
   };
 
   return (
@@ -25,6 +28,7 @@ export default function CreateTemplateModal({
         </label>
         <Input
           id="newTemplateName"
+          name="newTemplateName"
           required={true}
           placeholder="Название шаблона"
         />
