@@ -6,6 +6,7 @@ import TemplateCard from "./template-card";
 import CreateTemplateModal from "./create-template-modal";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import EmptyPlate from "./empty-plate";
 
 export type TemplatesListProps = {
   templates: TemplateDTO[];
@@ -18,7 +19,7 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex mb-4">
         <Input className="w-1/3" placeholder="Название шаблона" />
 
         <button
@@ -29,7 +30,9 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
         </button>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {templates.length === 0 && <EmptyPlate />}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {templates.map((template) => (
           <TemplateCard
             name={template.name}

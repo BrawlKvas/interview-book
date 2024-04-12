@@ -9,6 +9,7 @@ import {
 import CandidateCard from "./candidate-card";
 import CandidateModal, { CandidateModalProps } from "./candidate-modal";
 import { useState } from "react";
+import EmptyPlate from "./empty-plate";
 
 export type CandidatesListProps = {
   candidates: CandidateDTO[];
@@ -39,12 +40,15 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
   return (
     <>
       <button
-        className="block ml-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        className="block ml-auto mb-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
         onClick={() => setIsOpen(true)}
       >
         Добавить кандидата
       </button>
-      <div className="grid grid-cols-3 gap-4 mt-4">
+
+      {candidates.length === 0 && <EmptyPlate />}
+
+      <div className="grid grid-cols-3 gap-4">
         {candidates.map((candidate) => (
           <CandidateCard
             name={candidate.name}
@@ -60,6 +64,7 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
           />
         ))}
       </div>
+
       <CandidateModal
         isOpen={isOpen}
         initialValue={selectedCandidate}
