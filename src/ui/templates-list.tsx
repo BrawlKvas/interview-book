@@ -5,6 +5,7 @@ import Input from "./input";
 import TemplateCard from "./template-card";
 import CreateTemplateModal from "./create-template-modal";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export type TemplatesListProps = {
   templates: TemplateDTO[];
@@ -12,6 +13,8 @@ export type TemplatesListProps = {
 
 export default function TemplatesList({ templates }: TemplatesListProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const { push } = useRouter();
 
   return (
     <>
@@ -31,7 +34,7 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
           <TemplateCard
             name={template.name}
             onDelete={() => deleteTemplate(template.id)}
-            onClick={() => {}}
+            onClick={() => push(`/templates/${template.id}`)}
             key={template.id}
           />
         ))}
