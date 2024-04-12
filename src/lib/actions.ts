@@ -140,7 +140,7 @@ export type CandidateDTO = {
   id: number;
   name: string;
   surname: string;
-  specialty: string;
+  speciality: string;
   grade: string;
   salary: string;
   experience: string;
@@ -155,7 +155,7 @@ export async function getCandidates() {
 export async function addCandidate(candidate: {
   name: string;
   surname: string;
-  specialty: string;
+  speciality: string;
   grade: string;
   experience: string;
 }) {
@@ -169,7 +169,7 @@ export async function updateCandidate(candidate: {
   id: number;
   name: string;
   surname: string;
-  specialty: string;
+  speciality: string;
   grade: string;
   experience: string;
 }) {

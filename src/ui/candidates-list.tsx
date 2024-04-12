@@ -53,7 +53,7 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
           <CandidateCard
             name={candidate.name}
             surname={candidate.surname}
-            specialty={candidate.specialty}
+            speciality={candidate.speciality}
             experience={candidate.experience}
             key={candidate.id}
             onClick={() => {
