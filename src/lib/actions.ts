@@ -140,7 +140,7 @@ export type CandidateDTO = {
   id: number;
   name: string;
   surname: string;
-  speciality: string;
+  specialty: string;
   grade: string;
   salary: string;
   experience: string;
@@ -155,11 +155,14 @@ export async function getCandidates() {
 export async function addCandidate(candidate: {
   name: string;
   surname: string;
-  speciality: string;
+  specialty: string;
   grade: string;
   experience: string;
 }) {
-  await post<CandidateDTO>("/candidates", candidate);
+  await post<CandidateDTO>("/candidates", {
+    ...candidate,
+    speciality: candidate.specialty,
+  });
 
   revalidatePath("/candidates");
   redirect("/candidates");
@@ -169,11 +172,14 @@ export async function updateCandidate(candidate: {
   id: number;
   name: string;
   surname: string;
-  speciality: string;
+  specialty: string;
   grade: string;
   experience: string;
 }) {
-  await patch<CandidateDTO>("/candidates", candidate);
+  await patch<CandidateDTO>("/candidates", {
+    ...candidate,
+    speciality: candidate.specialty,
+  });
 
   revalidatePath("/candidates");
   redirect("/candidates");

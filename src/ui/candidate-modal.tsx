@@ -7,7 +7,7 @@ const Modal = dynamic(() => import("./modal"), { ssr: false });
 type CandidateModalForm = {
   name: string;
   surname: string;
-  speciality: string;
+  specialty: string;
   grade: string;
   experience: string;
 };
@@ -30,7 +30,7 @@ const FIELDS_CONFIG = [
     label: "Фамилия",
   },
   {
-    name: "speciality",
+    name: "specialty",
     label: "Специальность",
   },
   {

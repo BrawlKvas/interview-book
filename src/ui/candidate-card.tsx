@@ -5,7 +5,8 @@ import { MouseEventHandler } from "react";
 export type CandidateCardProps = {
   name: string;
   surname: string;
-  speciality: string;
+  grade: string;
+  specialty: string;
   experience: string;
   onClick?: VoidFunction;
   onDelete?: VoidFunction;
@@ -14,7 +15,8 @@ export type CandidateCardProps = {
 const CandidateCard = ({
   name,
   surname,
-  speciality,
+  grade,
+  specialty,
   experience,
   onClick,
   onDelete,
@@ -45,7 +47,8 @@ const CandidateCard = ({
           </button>
         )}
       </div>
-      <div className="text-gray-600 mb-2">{speciality}</div>
+      <div className="text-gray-600 mb-2">{specialty}</div>
+      <div className="text-gray-600 mb-2">{grade}</div>
       <div className="text-gray-600 mb-4">{experience}</div>
     </div>
   );
