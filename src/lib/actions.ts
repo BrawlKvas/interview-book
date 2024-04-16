@@ -253,4 +253,15 @@ export async function deleteTemplate(id: string) {
 
 export async function deleteTemplateQuestion(id: string) {
   await remove(`/template/question/${id}`);
+
+  revalidatePath("/templates");
+}
+
+export async function updateTemplateQuestionsOrder(
+  templateId: string,
+  order: string[]
+) {
+  await patch("/template", { templateId, order });
+
+  revalidatePath("/templates");
 }

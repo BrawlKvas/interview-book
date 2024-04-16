@@ -6,6 +6,7 @@ import { MouseEventHandler } from "react";
 export type QuestionCardProps = {
   text: string;
   tags?: string[];
+  className?: string;
   onClick?: VoidFunction;
   onDelete?: VoidFunction;
 };
@@ -13,6 +14,7 @@ export type QuestionCardProps = {
 export default function QuestionCard({
   text,
   tags,
+  className,
   onClick,
   onDelete,
 }: QuestionCardProps) {
@@ -25,7 +27,8 @@ export default function QuestionCard({
     <div
       className={clsx(
         "bg-white shadow-md rounded-md p-5 flex flex-col",
-        onClick && "cursor-pointer hover:shadow-lg transition-shadow"
+        onClick && "cursor-pointer hover:shadow-lg transition-shadow",
+        className
       )}
       onClick={onClick}
     >
