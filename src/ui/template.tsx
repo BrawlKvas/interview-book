@@ -3,6 +3,7 @@
 import {
   TemplateQuestionDTO,
   TemplateWithQuestionsDTO,
+  deleteTemplateQuestion,
   getTemplateById,
   updateTemplateQuestionsOrder,
 } from "@/lib/actions";
@@ -64,8 +65,18 @@ export default function Template({ initTemplateData }: TemplateProps) {
 
     setQuestions(movedQuestions);
 
-    await updateTemplateQuestionsOrder(template.id, movedQuestions.map(q => q.id));
+    await updateTemplateQuestionsOrder(
+      template.id,
+      movedQuestions.map((q) => q.id)
+    );
 
+    setIsValid(false);
+  };
+
+  const handleQuestionDelete = async (id: string) => {
+    setQuestions((prev) => prev.filter((q) => q.id !== id));
+
+    await deleteTemplateQuestion(id);
     setIsValid(false);
   };
 
@@ -75,7 +86,11 @@ export default function Template({ initTemplateData }: TemplateProps) {
         <PlusIcon />
       </button>
 
-      <TemplateQuestions questions={questions} onSortEnd={handleSortEnd} />
+      <TemplateQuestions
+        questions={questions}
+        onSortEnd={handleSortEnd}
+        onDelete={handleQuestionDelete}
+      />
     </div>
   );
 }

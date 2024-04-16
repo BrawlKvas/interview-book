@@ -6,17 +6,19 @@ const SortableItem = SortableElement<QuestionCardProps>(QuestionCard);
 
 export type TemplateQuestionsProps = {
   questions: TemplateQuestionDTO[];
+  onDelete?: (id: string) => void;
 };
 
-function TemplateQuestions({ questions }: TemplateQuestionsProps) {
+function TemplateQuestions({ questions, onDelete }: TemplateQuestionsProps) {
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col gap-y-4">
       {questions.map((question, index) => (
         <SortableItem
           text={question.question.name}
           index={index}
           key={question.id}
           className="cursor-move"
+          onDelete={() => onDelete?.(question.id)}
         />
       ))}
     </div>

@@ -39,7 +39,7 @@ export default function QuestionCard({
             className="text-red-500 hover:text-red-700 ml-2"
             onClick={handleDelete}
           >
-            <TrashIcon />
+            <TrashIcon className="pointer-events-none" />
           </button>
         )}
       </div>
