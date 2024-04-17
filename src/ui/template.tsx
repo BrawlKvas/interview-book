@@ -3,6 +3,7 @@
 import {
   TemplateQuestionDTO,
   TemplateWithQuestionsDTO,
+  addTemplateQuestions,
   deleteTemplateQuestion,
   getTemplateById,
   updateTemplateQuestionsOrder,
@@ -13,6 +14,9 @@ import { isRequestError } from "@/lib/utils";
 import TemplateQuestions from "./template-questions";
 import { SortEndHandler } from "react-sortable-hoc";
 import { arrayMoveImmutable } from "array-move";
+import AddQuestionTemplateModal, {
+  AddQuestionTemplateModalProps,
+} from "./add-question-template-modal";
 
 export type TemplateProps = {
   initTemplateData: TemplateWithQuestionsDTO;
@@ -30,6 +34,7 @@ const getQuestionsInOrder = ({
 export default function Template({ initTemplateData }: TemplateProps) {
   const [template, setTemplate] = useState(initTemplateData);
   const [isValid, setIsValid] = useState(true);
+  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const [questions, setQuestions] = useState<TemplateQuestionDTO[]>(() =>
     getQuestionsInOrder(initTemplateData)
@@ -73,6 +78,20 @@ export default function Template({ initTemplateData }: TemplateProps) {
     setIsValid(false);
   };
 
+  const handleAddQuestions: AddQuestionTemplateModalProps["onAddQuestions"] =
+    async (ids) => {
+      const res = await addTemplateQuestions(template.id, ids);
+
+      if (!res.some(isRequestError)) {
+        await updateTemplateQuestionsOrder(template.id, [
+          ...questions.map((q) => q.id),
+          ...(res as string[]),
+        ]);
+      }
+
+      setIsValid(false);
+    };
+
   const handleQuestionDelete = async (id: string) => {
     setQuestions((prev) => prev.filter((q) => q.id !== id));
 
@@ -82,7 +101,10 @@ export default function Template({ initTemplateData }: TemplateProps) {
 
   return (
     <div className="space-y-4">
-      <button className="w-full h-14 flex justify-center items-center text-slate-400 duration-150 border-2 border-dashed border-slate-300 hover:text-slate-300  hover:border-slate-200">
+      <button
+        className="w-full h-14 flex justify-center items-center text-slate-400 duration-150 border-2 border-dashed border-slate-300 hover:text-slate-300  hover:border-slate-200"
+        onClick={() => setIsOpenModal(true)}
+      >
         <PlusIcon />
       </button>
 
@@ -90,6 +112,12 @@ export default function Template({ initTemplateData }: TemplateProps) {
         questions={questions}
         onSortEnd={handleSortEnd}
         onDelete={handleQuestionDelete}
+      />
+
+      <AddQuestionTemplateModal
+        isOpen={isOpenModal}
+        onAddQuestions={handleAddQuestions}
+        onClose={() => setIsOpenModal(false)}
       />
     </div>
   );

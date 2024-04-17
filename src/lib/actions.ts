@@ -251,6 +251,14 @@ export async function deleteTemplate(id: string) {
   redirect("/templates");
 }
 
+export async function addTemplateQuestions(templateId: string, ids: number[]) {
+  const res = await Promise.all(ids.map(id => post<string>('/template/question', { templateId, questionId: id }, { parseRule: 'text'})));
+
+  revalidatePath("/templates");
+
+  return res;
+}
+
 export async function deleteTemplateQuestion(id: string) {
   await remove(`/template/question/${id}`);
 
