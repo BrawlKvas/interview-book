@@ -67,9 +67,10 @@ export default function QuestionFilters({
 
   const handleAddQuestion: QuestionModalProps["onSubmit"] = ({
     text,
+    hint,
     tags,
   }) => {
-    addQuestion({ name: text, tagIds: tags });
+    addQuestion({ name: text, hint, tagIds: tags });
     setIsOpenModal(false);
   };
 

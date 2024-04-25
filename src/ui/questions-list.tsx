@@ -20,10 +20,16 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
 
   const handleEditQuestion: QuestionModalProps["onSubmit"] = ({
     text,
+    hint,
     tags,
   }) => {
     if (selectedQuestion) {
-      updateQuestion({ id: selectedQuestion?.id, name: text, tagIds: tags });
+      updateQuestion({
+        id: selectedQuestion?.id,
+        name: text,
+        hint,
+        tagIds: tags,
+      });
     }
     setSelectedQuestion(null);
   };

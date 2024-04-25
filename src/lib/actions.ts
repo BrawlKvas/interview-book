@@ -87,6 +87,7 @@ export async function getQuestions(
 
 export async function addQuestion(newQuestion: {
   name: string;
+  hint: string;
   tagIds: number[];
 }) {
   // TODO Добавить тип для ответа
@@ -106,6 +107,7 @@ export async function deleteQuestion(id: number) {
 export async function updateQuestion(newQuestion: {
   id: number;
   name?: string;
+  hint?: string;
   tagIds?: number[];
 }) {
   // TODO Добавить тип для ответа

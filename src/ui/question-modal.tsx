@@ -12,11 +12,12 @@ export type QuestionModalProps = {
   isOpen?: boolean;
   initialValue?: {
     text?: string;
+    hint?: string;
     tags?: number[];
   };
   btnText?: string;
   onClose?: VoidFunction;
-  onSubmit?: (value: { text: string; tags: number[] }) => void;
+  onSubmit?: (value: { text: string; hint: string; tags: number[] }) => void;
 };
 
 export default function QuestionModal({
@@ -27,6 +28,7 @@ export default function QuestionModal({
   onSubmit,
 }: QuestionModalProps) {
   const textArea = useRef<HTMLTextAreaElement>(null);
+  const hintArea = useRef<HTMLTextAreaElement>(null);
   const [tags, setTags] = useState<TagDTO[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,9 +79,10 @@ export default function QuestionModal({
     e.preventDefault();
 
     const text = textArea.current?.value || "";
+    const hint = hintArea.current?.value || "";
     const tagIds = tags.map((tag) => tag.id);
 
-    onSubmit?.({ text, tags: tagIds });
+    onSubmit?.({ text, hint, tags: tagIds });
   };
 
   return (
@@ -92,9 +95,20 @@ export default function QuestionModal({
           <textarea
             ref={textArea}
             id="questionText"
-            className="w-full border rounded-md p-2"
+            className="w-full border-2 rounded-md p-2"
             defaultValue={initialValue.text}
             required={true}
+          />
+        </div>
+        <div>
+          <label htmlFor="questionHint" className="block">
+            Ответ на вопрос:
+          </label>
+          <textarea
+            ref={hintArea}
+            id="questionHint"
+            className="w-full border-2 rounded-md p-2"
+            defaultValue={initialValue.hint}
           />
         </div>
         <div className="mt-4">
