@@ -63,7 +63,9 @@ export async function logOut() {
 export type QuestionDTO = {
   id: number;
   name: string;
+  hint: string | null;
   tags: { id: number; name: string }[];
+  isPublic: boolean;
 };
 
 export async function getQuestions(
@@ -72,8 +74,11 @@ export async function getQuestions(
     tags?: string;
     page?: string;
     pageSize?: string;
+    isPublic?: string;
   } = {}
 ) {
+  query.isPublic = query.isPublic || "true";
+
   const url = "/questions";
   const searchParams = new URLSearchParams(query).toString();
 
@@ -252,7 +257,15 @@ export async function deleteTemplate(id: string) {
 }
 
 export async function addTemplateQuestions(templateId: string, ids: number[]) {
-  const res = await Promise.all(ids.map(id => post<string>('/template/question', { templateId, questionId: id }, { parseRule: 'text'})));
+  const res = await Promise.all(
+    ids.map((id) =>
+      post<string>(
+        "/template/question",
+        { templateId, questionId: id },
+        { parseRule: "text" }
+      )
+    )
+  );
 
   revalidatePath("/templates");
 

@@ -73,6 +73,14 @@ export default function QuestionFilters({
     setIsOpenModal(false);
   };
 
+  const handleChangeCheckbox: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const params = new URLSearchParams(searchParams);
+
+    params.set("isPublic", String(!e.target.checked));
+
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <div className="mb-4">
       <div className="flex">
@@ -83,7 +91,18 @@ export default function QuestionFilters({
           onChange={handleQuestionNameChange}
           defaultValue={searchParams.get("name")?.toString()}
         />
+
         <SearchTags className="w-1/3" onSelect={handleTagSelect} />
+
+        <label className="ml-4 flex items-center space-x-2">
+          <input
+            type="checkbox"
+            className="form-checkbox text-indigo-600 h-5 w-5"
+            onChange={handleChangeCheckbox}
+            defaultChecked={searchParams.get("isPublic") === "false"}
+          />
+          <span className="text-gray-700">Мои вопросы</span>
+        </label>
 
         <button
           className="ml-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"

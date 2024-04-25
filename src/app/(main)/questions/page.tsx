@@ -11,6 +11,7 @@ export default async function Page({
     tags?: string;
     page?: string;
     pageSize?: string;
+    isPublic?: string;
   };
 }) {
   const questions = await getQuestions(searchParams);

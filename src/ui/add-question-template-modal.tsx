@@ -27,6 +27,7 @@ export default function AddQuestionTemplateModal({
 
   const [filterName, setFilterName] = useState("");
   const [filterTags, setFilterTags] = useState<TagDTO[]>([]);
+  const [filterIsPublic, setFilterIsPublic] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,6 +36,7 @@ export default function AddQuestionTemplateModal({
       const res = await getQuestions({
         name: filterName,
         ...(tags ? { tags } : {}),
+        isPublic: String(filterIsPublic),
       });
 
       if (!isRequestError(res)) {
@@ -43,7 +45,7 @@ export default function AddQuestionTemplateModal({
     }
 
     fetchData();
-  }, [filterName, filterTags]);
+  }, [filterName, filterTags, filterIsPublic]);
 
   const handleSelectTag: SearchTagsProps["onSelect"] = async (id) => {
     if (filterTags.some((tag) => tag.id === id)) return;
@@ -101,7 +103,17 @@ export default function AddQuestionTemplateModal({
           className="mr-4 w-1/3"
           onChange={(e) => setFilterName(e.target.value)}
         />
+
         <SearchTags className="w-1/3" onSelect={handleSelectTag} />
+
+        <label className="ml-4 flex items-center space-x-2">
+          <input
+            type="checkbox"
+            className="form-checkbox text-indigo-600 h-5 w-5"
+            onChange={(e) => setFilterIsPublic(!e.target.checked)}
+          />
+          <span className="text-gray-700">Мои вопросы</span>
+        </label>
       </div>
 
       {filterTags.length !== 0 && (

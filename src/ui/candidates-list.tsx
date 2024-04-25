@@ -21,11 +21,9 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
 
   const handleSubmit: CandidateModalProps["onSubmit"] = (values) => {
     if (selectedCandidate) {
-      console.log("updateCandidate", { id: selectedCandidate.id, ...values });
       updateCandidate({ id: selectedCandidate.id, ...values });
       setSelectedCandidate(undefined);
     } else {
-      console.log("addCandidate", values);
       addCandidate(values);
     }
 
