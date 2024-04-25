@@ -4,8 +4,8 @@ import { TemplateDTO, deleteTemplate } from "@/lib/actions";
 import Input from "./input";
 import TemplateCard from "./template-card";
 import CreateTemplateModal from "./create-template-modal";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { ChangeEventHandler, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import EmptyPlate from "./empty-plate";
 
 export type TemplatesListProps = {
@@ -13,14 +13,35 @@ export type TemplatesListProps = {
 };
 
 export default function TemplatesList({ templates }: TemplatesListProps) {
+  const pathname = usePathname();
+  const { replace, push } = useRouter();
+  const searchParams = useSearchParams();
+
   const [isOpen, setIsOpen] = useState(false);
 
-  const { push } = useRouter();
+  const handleQuestionNameChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value },
+  }) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (value) {
+      params.set("name", value);
+    } else {
+      params.delete("name");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <>
       <div className="flex mb-4">
-        <Input className="w-1/3" placeholder="Название шаблона" />
+        <Input
+          className="w-1/3"
+          placeholder="Название шаблона"
+          defaultValue={searchParams.get("name")?.toString()}
+          onChange={handleQuestionNameChange}
+        />
 
         <button
           className="ml-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
