@@ -1,5 +1,6 @@
 import { logOut } from "@/lib/actions";
 import NavLinks from "./nav-links";
+import StartInterviewButton from "./start-interview-button";
 
 export default function Header() {
   return (
@@ -15,9 +16,7 @@ export default function Header() {
             </div>
           </div>
           <div className="ml-10 space-x-4">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-              Начать интервью
-            </button>
+            <StartInterviewButton />
             <form className="inline-block" action={logOut}>
               <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
                 Выйти
