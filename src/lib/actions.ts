@@ -222,6 +222,7 @@ export type TemplateWithQuestionsDTO = TemplateDTO & {
 
 export async function getTemplates(query?: {
   name?: string;
+  isPublic?: string;
   page?: string;
   pageSize?: string;
 }) {

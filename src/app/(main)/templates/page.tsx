@@ -7,6 +7,7 @@ export default async function Page({
 }: {
   searchParams?: {
     name?: string;
+    isPublic?: string;
   };
 }) {
   const templates = await getTemplates(searchParams);
