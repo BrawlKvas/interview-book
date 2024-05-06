@@ -313,3 +313,7 @@ export async function createInterview(payload: {
 
   return res;
 }
+
+export async function getInterviews() {
+  return get<{ id: string; date: string; status: string }[]>("/interview/history/all-interviews");
+}

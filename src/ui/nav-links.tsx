@@ -4,7 +4,7 @@ import Link from "next/link";
 const links = [
   { name: "Вопросы", href: routes.questions },
   { name: "Шаблоны", href: routes.templates },
-  { name: "Результаты интервью", href: routes.interviews },
+  { name: "Интервью", href: routes.interviews },
   { name: "Кандидаты", href: routes.candidates },
 ];
 
