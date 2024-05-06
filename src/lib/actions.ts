@@ -289,3 +289,27 @@ export async function updateTemplateQuestionsOrder(
 
   revalidatePath("/templates");
 }
+
+/* INTERVIEWS */
+
+export type InterviewDTO = {
+  id: string;
+  isResultPublished: boolean;
+  status: string;
+  template: {}; // TODO
+  result: []; // TODO
+  candidate: {} // TODO
+  date: string;
+}
+
+export async function createInterview(payload: {
+  date: string;
+  templateId: string;
+  candidateId: number;
+}) {
+  const res = await post<InterviewDTO>("/interview", payload);
+
+  revalidatePath("/interviews");
+
+  return res;
+}
