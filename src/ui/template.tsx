@@ -101,6 +101,23 @@ export default function Template({ initTemplateData }: TemplateProps) {
 
   return (
     <div className="space-y-4">
+      <label className="flex items-center">
+        <span className="text-gray-600">Название шаблона:</span>
+        <input
+          className="w-1/2 ml-4 border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
+          defaultValue={initTemplateData.name}
+        />
+      </label>
+
+      <label className="flex items-center">
+        <span className="text-gray-600">Публичный шаблон:</span>
+        <input
+          type="checkbox"
+          className="ml-4 form-checkbox text-indigo-600 h-5 w-5"
+          checked={initTemplateData.isPublic}
+        />
+      </label>
+
       <button
         className="w-full h-14 flex justify-center items-center text-slate-400 duration-150 border-2 border-dashed border-slate-300 hover:text-slate-300  hover:border-slate-200"
         onClick={() => setIsOpenModal(true)}
