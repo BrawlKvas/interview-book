@@ -5,6 +5,7 @@ import { MouseEventHandler } from "react";
 
 export type QuestionCardProps = {
   text: string;
+  hint?: string;
   tags?: string[];
   className?: string;
   onClick?: VoidFunction;
@@ -13,6 +14,7 @@ export type QuestionCardProps = {
 
 export default function QuestionCard({
   text,
+  hint,
   tags,
   className,
   onClick,
@@ -43,11 +45,17 @@ export default function QuestionCard({
           </button>
         )}
       </div>
-      <div className="mt-2 space-x-2">
+      <div className="mt-2 flex flex-wrap gap-2">
         {tags?.map((tag) => (
           <Tag text={tag} key={tag} />
         ))}
       </div>
+      {hint && (
+        <details className="mt-2" onClick={(e) => e.stopPropagation()}>
+          <summary>Вспомогающая информация</summary>
+          <p className="mt-2">{hint}</p>
+        </details>
+      )}
     </div>
   );
 }
