@@ -119,7 +119,7 @@ export default function QuestionModal({
             disabled={isLoading}
             isAllowCreate={true}
           />
-          <div className="mt-4 flex gap-2 h-8 items-center">
+          <div className="mt-4 flex gap-2 min-h-8 items-center flex-wrap">
             {tags.map((tag) => (
               <Tag
                 text={tag.name}
