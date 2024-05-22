@@ -2,12 +2,13 @@ import XMarkIcon from "./icons/x-mark";
 
 export type TagProps = {
   text: string;
+  color?: 'blue' | 'green' | 'gray';
   onDelete?: VoidFunction;
 };
 
-export default function Tag({ text, onDelete }: TagProps) {
+export default function Tag({ text, color = 'blue', onDelete }: TagProps) {
   return (
-    <span className="inline-flex gap-1 align-center bg-blue-100 text-blue-500 px-2 py-1 rounded-full">
+    <span className={`inline-flex gap-1 align-center bg-${color}-100 text-${color}-500 px-2 py-1 rounded-full`}>
       {text}
 
       {onDelete && (
