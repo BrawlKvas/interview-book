@@ -6,6 +6,7 @@ import { clearSession, setSession } from "./session";
 import routes from "@/constants/routes";
 import { revalidatePath } from "next/cache";
 import { isRequestError } from "./utils";
+import { InterviewStatus } from "./types";
 
 /* AUTH */
 export async function signIn(formData: FormData) {
@@ -18,6 +19,8 @@ export async function signIn(formData: FormData) {
   );
 
   if ("access_token" in data) {
+    revalidatePath("/");
+
     setSession(data);
 
     redirect(routes.templates);
@@ -45,6 +48,8 @@ export async function signUp(formData: FormData) {
   );
 
   if ("access_token" in data) {
+    revalidatePath("/");
+
     setSession(data);
 
     redirect(routes.templates);
@@ -57,6 +62,15 @@ export async function logOut() {
   clearSession();
 
   redirect(routes.signIn);
+}
+
+export type UserDTO = {
+  id: number;
+  login: string;
+};
+
+export async function getMe() {
+  return get<UserDTO>("/user/me");
 }
 
 /* QUESTIONS */
