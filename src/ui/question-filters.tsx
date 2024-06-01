@@ -102,7 +102,7 @@ export default function QuestionFilters({
             onChange={handleChangeCheckbox}
             defaultChecked={searchParams.get("isPublic") === "true"}
           />
-          <span className="text-gray-700">Публичные вопросы</span>
+          <span className="text-gray-700">Публичные</span>
         </label>
 
         <button

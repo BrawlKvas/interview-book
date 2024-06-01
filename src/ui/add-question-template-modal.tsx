@@ -112,7 +112,7 @@ export default function AddQuestionTemplateModal({
             className="form-checkbox text-indigo-600 h-5 w-5"
             onChange={(e) => setFilterIsPublic(e.target.checked)}
           />
-          <span className="text-gray-700">Публичные вопросы</span>
+          <span className="text-gray-700">Публичные</span>
         </label>
       </div>
 

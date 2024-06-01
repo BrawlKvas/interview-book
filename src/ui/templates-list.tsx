@@ -58,7 +58,7 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
             onChange={handleChangeCheckbox}
             defaultChecked={searchParams.get("isPublic") === "true"}
           />
-          <span className="text-gray-700">Публичные шаблоны</span>
+          <span className="text-gray-700">Публичные</span>
         </label>
 
         <button
