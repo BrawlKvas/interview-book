@@ -68,18 +68,17 @@ export type QuestionDTO = {
   isPublic: boolean;
 };
 
-export async function getQuestions(
-  query: {
-    name?: string;
-    tags?: string;
-    page?: string;
-    pageSize?: string;
-    isPublic?: string;
-  } = {}
-) {
-  query.isPublic = query.isPublic || "true";
-
-  const url = "/questions";
+export async function getQuestions({
+  isPublic,
+  ...query
+}: {
+  name?: string;
+  tags?: string;
+  page?: string;
+  pageSize?: string;
+  isPublic?: string;
+} = {}) {
+  const url = isPublic === "true" ? "/questions" : "/questions/my-questions";
   const searchParams = new URLSearchParams(query).toString();
 
   return get<QuestionDTO[]>(url + (searchParams ? `?${searchParams}` : ""));
@@ -220,13 +219,16 @@ export type TemplateWithQuestionsDTO = TemplateDTO & {
   questions: TemplateQuestionDTO[];
 };
 
-export async function getTemplates(query?: {
+export async function getTemplates({
+  isPublic,
+  ...query
+}: {
   name?: string;
-  isPublic?: string;
   page?: string;
   pageSize?: string;
-}) {
-  const url = "/template";
+  isPublic?: string;
+} = {}) {
+  const url = isPublic === "true" ? "/template" : "/template/user";
   const searchParams = new URLSearchParams(query).toString();
 
   return get<TemplateDTO[]>(url + (searchParams ? `?${searchParams}` : ""));
@@ -298,9 +300,9 @@ export type InterviewDTO = {
   status: string;
   template: {}; // TODO
   result: []; // TODO
-  candidate: {} // TODO
+  candidate: {}; // TODO
   date: string;
-}
+};
 
 export async function createInterview(payload: {
   date: string;
@@ -315,5 +317,7 @@ export async function createInterview(payload: {
 }
 
 export async function getInterviews() {
-  return get<{ id: string; date: string; status: string }[]>("/interview/history/all-interviews");
+  return get<{ id: string; date: string; status: string }[]>(
+    "/interview/history/all-interviews"
+  );
 }

@@ -77,7 +77,7 @@ export default function QuestionFilters({
   const handleChangeCheckbox: ChangeEventHandler<HTMLInputElement> = (e) => {
     const params = new URLSearchParams(searchParams);
 
-    params.set("isPublic", String(!e.target.checked));
+    params.set("isPublic", String(e.target.checked));
 
     replace(`${pathname}?${params.toString()}`);
   };
@@ -100,9 +100,9 @@ export default function QuestionFilters({
             type="checkbox"
             className="form-checkbox text-indigo-600 h-5 w-5"
             onChange={handleChangeCheckbox}
-            defaultChecked={searchParams.get("isPublic") === "false"}
+            defaultChecked={searchParams.get("isPublic") === "true"}
           />
-          <span className="text-gray-700">Мои вопросы</span>
+          <span className="text-gray-700">Публичные вопросы</span>
         </label>
 
         <button

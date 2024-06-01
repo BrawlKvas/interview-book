@@ -25,6 +25,7 @@ export default function SearchTemplates({
 
       const res = await getTemplates({
         name: inputValue,
+        isPublic: "true",
       });
 
       if (!isRequestError(res)) {

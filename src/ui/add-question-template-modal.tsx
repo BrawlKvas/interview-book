@@ -27,7 +27,7 @@ export default function AddQuestionTemplateModal({
 
   const [filterName, setFilterName] = useState("");
   const [filterTags, setFilterTags] = useState<TagDTO[]>([]);
-  const [filterIsPublic, setFilterIsPublic] = useState(true);
+  const [filterIsPublic, setFilterIsPublic] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -110,9 +110,9 @@ export default function AddQuestionTemplateModal({
           <input
             type="checkbox"
             className="form-checkbox text-indigo-600 h-5 w-5"
-            onChange={(e) => setFilterIsPublic(!e.target.checked)}
+            onChange={(e) => setFilterIsPublic(e.target.checked)}
           />
-          <span className="text-gray-700">Мои вопросы</span>
+          <span className="text-gray-700">Публичные вопросы</span>
         </label>
       </div>
 
