@@ -50,7 +50,7 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
           key={question.id}
           hint={question.hint || ""}
           text={question.name}
-          tags={question.tags.map(q => q.name)}
+          tags={question.tags.map((q) => q.name)}
           onClick={() => setSelectedQuestion(question)}
           onDelete={() => handleDelete(question.id)}
         />

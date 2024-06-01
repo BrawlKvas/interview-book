@@ -226,6 +226,7 @@ export type TemplateQuestionDTO = {
   question: {
     id: number;
     name: string;
+    hint?: string;
   };
 };
 
@@ -308,13 +309,20 @@ export async function updateTemplateQuestionsOrder(
 
 /* INTERVIEWS */
 
+export type InterviewResultDTO = {
+  id: string;
+  question: { id: string }; // TODO
+  rate: number;
+  interviewNote: string;
+};
+
 export type InterviewDTO = {
   id: string;
   isResultPublished: boolean;
-  status: string;
-  template: {}; // TODO
-  result: []; // TODO
-  candidate: {}; // TODO
+  status: InterviewStatus;
+  template: TemplateWithQuestionsDTO;
+  result: InterviewResultDTO[];
+  candidate: CandidateDTO;
   date: string;
 };
 
@@ -331,7 +339,39 @@ export async function createInterview(payload: {
 }
 
 export async function getInterviews() {
-  return get<{ id: string; date: string; status: string }[]>(
-    "/interview/history/all-interviews"
-  );
+  return get<InterviewDTO[]>("/interview/history/all-interviews");
+}
+
+export async function getInterviewById(interviewId: string) {
+  return get<InterviewDTO>(`/interview/${interviewId}`);
+}
+
+export async function updateInterviewStatus(
+  interviewId: string,
+  status: InterviewStatus
+) {
+  await patch(`/interview/status?id=${interviewId}&status=${status}`, {});
+
+  revalidatePath("/interviews");
+}
+
+export async function addInterviewResult(body: {
+  interviewId: string;
+  questionId: string; // TODO Или number?
+  rate: number;
+  interviewNote: string;
+}) {
+  await post(`/interview/result`, body);
+
+  revalidatePath("/interviews");
+}
+
+export async function updateInterviewResult(body: {
+  id: string;
+  rate: number;
+  interviewNote: string;
+}) {
+  await patch("/interview/update-question-result", body);
+
+  revalidatePath("/interviews");
 }

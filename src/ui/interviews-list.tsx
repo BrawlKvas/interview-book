@@ -1,7 +1,8 @@
+import { InterviewDTO } from "@/lib/actions";
 import InterviewCard from "./interview-card";
 
 export type InterviewsListProps = {
-  interviews: { id: string; date: string; status: string }[]; // TODO
+  interviews: InterviewDTO[];
 };
 
 export default function InterviewsList({ interviews }: InterviewsListProps) {
@@ -9,7 +10,9 @@ export default function InterviewsList({ interviews }: InterviewsListProps) {
     <div className="grid grid-cols-3 gap-4">
       {interviews.map((interview) => (
         <InterviewCard
-          candidateFIO="Романов Леонид"
+          candidateFIO={
+            interview.candidate.surname + " " + interview.candidate.name
+          }
           date={interview.date}
           status={interview.status}
           key={interview.id}

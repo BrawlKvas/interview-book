@@ -1,14 +1,22 @@
 import clsx from "clsx";
 import { MouseEventHandler } from "react";
 import TrashIcon from "./icons/trash";
+import { InterviewStatus } from "@/lib/types";
+import Tag from "./tag";
 
 export type InterviewCardProps = {
   candidateFIO: string;
   date: string;
-  status: string;
+  status: InterviewStatus;
   onClick?: VoidFunction;
   onDelete?: VoidFunction;
 };
+
+const STATUS_COLORS = {
+  [InterviewStatus.Scheduled]: "gray",
+  [InterviewStatus.InProgress]: "blue",
+  [InterviewStatus.Completed]: "green",
+} as const;
 
 export default function InterviewCard({
   candidateFIO,
@@ -41,8 +49,8 @@ export default function InterviewCard({
           </button>
         )}
       </div>
-      <div className="text-gray-600 mb-2">{status}</div>
-      <div className="text-gray-600 mb-2">
+      <Tag text={status} color={STATUS_COLORS[status]} />
+      <div className="text-gray-600 mt-2 mb-2">
         {new Date(date).toLocaleDateString()}
       </div>
     </div>
