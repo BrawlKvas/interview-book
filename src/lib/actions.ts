@@ -339,7 +339,9 @@ export async function createInterview(payload: {
 }
 
 export async function getInterviews() {
-  return get<InterviewDTO[]>("/interview/history/all-interviews");
+  return get<{ id: string; date: string; status: InterviewStatus }[]>(
+    "/interview/history/all-interviews"
+  );
 }
 
 export async function getInterviewById(interviewId: string) {
