@@ -6,6 +6,7 @@ import QuestionModal, { QuestionModalProps } from "./question-modal";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import EmptyPlate from "./empty-plate";
+import { useUser } from "@/context/user";
 
 export type QuestionsListProps = {
   questions: QuestionDTO[];
@@ -17,6 +18,8 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
   const [selectedQuestion, setSelectedQuestion] = useState<QuestionDTO | null>(
     null
   );
+
+  const user = useUser();
 
   const handleEditQuestion: QuestionModalProps["onSubmit"] = ({
     text,
@@ -53,8 +56,16 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
           hint={question.hint || ""}
           text={question.name}
           tags={question.tags.map((q) => q.name)}
-          onClick={() => setSelectedQuestion(question)}
-          onDelete={() => handleDelete(question.id)}
+          onClick={
+            question.creator.id === user?.id
+              ? () => setSelectedQuestion(question)
+              : undefined
+          }
+          onDelete={
+            question.creator.id === user?.id
+              ? () => handleDelete(question.id)
+              : undefined
+          }
         />
       ))}
       <QuestionModal

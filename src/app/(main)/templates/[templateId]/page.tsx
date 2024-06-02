@@ -19,10 +19,6 @@ export default async function Page({
         <h1 className="text-2xl font-bold text-slate-700">
           Шаблон - &quot;{template.name}&quot;
         </h1>
-
-        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-          Сохранить
-        </button>
       </div>
 
       <Template initTemplateData={template} />

@@ -6,10 +6,12 @@ import {
   addTemplateQuestions,
   deleteTemplateQuestion,
   getTemplateById,
+  updateTemplateIsPublic,
+  updateTemplateName,
   updateTemplateQuestionsOrder,
 } from "@/lib/actions";
 import PlusIcon from "./icons/plus";
-import { useEffect, useState } from "react";
+import { ChangeEventHandler, useEffect, useState } from "react";
 import { isRequestError } from "@/lib/utils";
 import TemplateQuestions from "./template-questions";
 import { SortEndHandler } from "react-sortable-hoc";
@@ -99,13 +101,34 @@ export default function Template({ initTemplateData }: TemplateProps) {
     setIsValid(false);
   };
 
+  const handleChangeIsPublic: ChangeEventHandler<HTMLInputElement> = async ({
+    target,
+  }) => {
+    setTemplate((prev) => ({ ...prev, isPublic: target.checked }));
+
+    await updateTemplateIsPublic(template.id, target.checked);
+
+    setIsValid(false);
+  };
+
+  const handleChangeName: ChangeEventHandler<HTMLInputElement> = async ({
+    target,
+  }) => {
+    setTemplate((prev) => ({ ...prev, name: target.value }));
+
+    await updateTemplateName(template.id, target.value);
+
+    setIsValid(false);
+  };
+
   return (
     <div className="space-y-4">
       <label className="flex items-center">
         <span className="text-gray-600">Название шаблона:</span>
         <input
           className="w-1/2 ml-4 border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
-          defaultValue={initTemplateData.name}
+          value={template.name}
+          onChange={handleChangeName}
         />
       </label>
 
@@ -114,7 +137,8 @@ export default function Template({ initTemplateData }: TemplateProps) {
         <input
           type="checkbox"
           className="ml-4 form-checkbox text-indigo-600 h-5 w-5"
-          checked={initTemplateData.isPublic}
+          checked={template.isPublic}
+          onChange={handleChangeIsPublic}
         />
       </label>
 

@@ -80,6 +80,7 @@ export type QuestionDTO = {
   hint: string | null;
   tags: { id: number; name: string }[];
   isPublic: boolean;
+  creator: UserDTO;
 };
 
 export async function getQuestions({
@@ -274,7 +275,7 @@ export async function getTemplateById(id: string) {
 export async function addTemplate(name: string) {
   const templateId = await post<string>(
     "/template",
-    { name, isPublic: true },
+    { name, isPublic: false },
     { parseRule: "text" }
   );
 
@@ -321,6 +322,28 @@ export async function updateTemplateQuestionsOrder(
   order: string[]
 ) {
   await patch("/template", { templateId, order });
+
+  revalidatePath("/templates");
+}
+
+export async function updateTemplateIsPublic(id: string, isPublic: boolean) {
+  const searchParams = new URLSearchParams({
+    id,
+    isPublic: String(isPublic),
+  });
+
+  await patch(`/template/isPublic?${searchParams.toString()}`, {});
+
+  revalidatePath("/templates");
+}
+
+export async function updateTemplateName(id: string, name: string) {
+  const searchParams = new URLSearchParams({
+    id,
+    name,
+  });
+
+  await patch(`/template/name?${searchParams.toString()}`, {});
 
   revalidatePath("/templates");
 }
