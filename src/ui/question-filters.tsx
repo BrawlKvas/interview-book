@@ -113,8 +113,8 @@ export default function QuestionFilters({
         </button>
 
         <QuestionModal
-          btnText="Добавить"
           isOpen={isOpenModal}
+          mode="create"
           onSubmit={handleAddQuestion}
           onClose={() => setIsOpenModal(false)}
         />

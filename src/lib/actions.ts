@@ -117,17 +117,35 @@ export async function deleteQuestion(id: number) {
   revalidatePath("/questions");
 }
 
-export async function updateQuestion(newQuestion: {
+export async function updateQuestion({
+  isPublic,
+  ...newQuestion
+}: {
   id: number;
   name?: string;
   hint?: string;
   tagIds?: number[];
+  isPublic?: boolean;
 }) {
   // TODO Добавить тип для ответа
-  patch("/questions", newQuestion);
+
+  await patch("/questions", newQuestion);
+
+  if (isPublic !== undefined) {
+    await updateIsPublicQuestion(newQuestion.id, isPublic);
+  }
 
   revalidatePath("/questions");
   redirect("/questions");
+}
+
+export async function updateIsPublicQuestion(id: number, isPublic: boolean) {
+  const searchParams = new URLSearchParams({
+    id: String(id),
+    isPublic: String(isPublic),
+  }).toString();
+
+  return patch(`/questions/isPublic?${searchParams}`, {});
 }
 
 /* TAGS */

@@ -22,6 +22,7 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
     text,
     hint,
     tags,
+    isPublic,
   }) => {
     if (selectedQuestion) {
       updateQuestion({
@@ -29,6 +30,7 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
         name: text,
         hint,
         tagIds: tags,
+        isPublic,
       });
     }
     setSelectedQuestion(null);
@@ -57,11 +59,12 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
       ))}
       <QuestionModal
         isOpen={!!selectedQuestion}
+        mode="edit"
         initialValue={{
           text: selectedQuestion?.name,
           tags: selectedQuestion?.tags.map((tag) => tag.id),
+          isPublic: selectedQuestion?.isPublic,
         }}
-        btnText="Сохранить"
         onClose={() => setSelectedQuestion(null)}
         onSubmit={handleEditQuestion}
       />

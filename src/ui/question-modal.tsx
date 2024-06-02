@@ -10,25 +10,32 @@ const Modal = dynamic(() => import("./modal"), { ssr: false });
 
 export type QuestionModalProps = {
   isOpen?: boolean;
+  mode?: "create" | "edit";
   initialValue?: {
     text?: string;
     hint?: string;
     tags?: number[];
+    isPublic?: boolean;
   };
-  btnText?: string;
   onClose?: VoidFunction;
-  onSubmit?: (value: { text: string; hint: string; tags: number[] }) => void;
+  onSubmit?: (value: {
+    text: string;
+    hint: string;
+    tags: number[];
+    isPublic: boolean;
+  }) => void;
 };
 
 export default function QuestionModal({
   isOpen,
-  btnText,
+  mode = "create",
   initialValue = {},
   onClose,
   onSubmit,
 }: QuestionModalProps) {
   const textArea = useRef<HTMLTextAreaElement>(null);
   const hintArea = useRef<HTMLTextAreaElement>(null);
+  const publicCheckbox = useRef<HTMLInputElement>(null);
   const [tags, setTags] = useState<TagDTO[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -80,9 +87,10 @@ export default function QuestionModal({
 
     const text = textArea.current?.value || "";
     const hint = hintArea.current?.value || "";
+    const isPublic = publicCheckbox.current?.checked || false;
     const tagIds = tags.map((tag) => tag.id);
 
-    onSubmit?.({ text, hint, tags: tagIds });
+    onSubmit?.({ text, hint, tags: tagIds, isPublic });
   };
 
   return (
@@ -111,6 +119,18 @@ export default function QuestionModal({
             defaultValue={initialValue.hint}
           />
         </div>
+        {mode !== "create" && (
+          <div className="flex items-center space-x-2 mt-2">
+            <label htmlFor="isPublic">Сделать публичным:</label>
+            <input
+              ref={publicCheckbox}
+              id="isPublic"
+              type="checkbox"
+              className="form-checkbox text-indigo-600 h-5 w-5"
+              defaultChecked={initialValue.isPublic}
+            />
+          </div>
+        )}
         <div className="mt-4">
           <label className="block mb-2">Теги:</label>
           <SearchTags
@@ -135,7 +155,7 @@ export default function QuestionModal({
             type="submit"
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           >
-            {btnText || "Отправить"}
+            {mode === "create" ? "Создать" : "Сохранить"}
           </button>
         </div>
       </form>
