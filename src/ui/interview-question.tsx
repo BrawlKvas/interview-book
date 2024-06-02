@@ -2,7 +2,13 @@
 
 import QuestionCard from "./question-card";
 
-const OPTIONS = [0, 1, 2, 3, 4, 5];
+const OPTIONS = [
+  { title: "-", value: -1 },
+  { title: "0 😕", value: 0 },
+  { title: "1 🤓", value: 1 },
+  { title: "2 🧐", value: 2 },
+  { title: "3 😎", value: 3 },
+];
 
 export type InterviewQuestionProps = {
   question: {
@@ -49,8 +55,8 @@ export default function InterviewQuestion({
         onChange={(e) => onRateChange?.(+e.target.value)}
       >
         {OPTIONS.map((el) => (
-          <option value={el} key={el}>
-            {el}
+          <option value={el.value} key={el.value}>
+            {el.title}
           </option>
         ))}
       </select>

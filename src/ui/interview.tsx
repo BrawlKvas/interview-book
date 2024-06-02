@@ -23,6 +23,16 @@ const STATUS_COLORS = {
   [InterviewStatus.Completed]: "green",
 } as const;
 
+function getTotalResultEmodj(value: number) {
+  if (value < 1) return "😕";
+
+  if (value < 2) return "🤓";
+
+  if (value < 2.5) return "🧐";
+
+  return "😎";
+}
+
 export default function Interview({ initInterviewData }: InterviewProps) {
   const [isValid, setIsValid] = useState(true);
   const [interview, setInterview] = useState<InterviewDTO>(initInterviewData);
@@ -33,7 +43,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
     candidate,
     date: interviewDate,
     template: { questions },
-    result,
+    result = [],
   } = interview;
 
   const questionsWithResult = useMemo(() => {
@@ -44,6 +54,13 @@ export default function Interview({ initInterviewData }: InterviewProps) {
       return { ...question, result: questionResult || null };
     });
   }, [questions, result]);
+
+  const totalResult = useMemo(
+    () =>
+      result.reduce((acc, r) => (r.rate === -1 ? acc : r.rate + acc), 0) /
+      (result.length || 1),
+    [result]
+  );
 
   useEffect(() => {
     let flag = true;
@@ -103,7 +120,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
       setInterview((prev) => ({
         ...prev,
         result: [
-          ...prev.result,
+          ...(prev.result || []),
           {
             id: "temp",
             question: question,
@@ -151,7 +168,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
           {
             id: "temp",
             question: question,
-            rate: 0,
+            rate: -1,
             interviewNote,
           },
         ],
@@ -160,7 +177,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
       await addInterviewResult({
         interviewId,
         questionId: question.id,
-        rate: 0,
+        rate: -1,
         interviewNote,
       });
 
@@ -197,13 +214,17 @@ export default function Interview({ initInterviewData }: InterviewProps) {
               hint: q.question.hint,
             }}
             interviewNote={q.result?.interviewNote || ""}
-            rate={q.result?.rate || 0}
+            rate={q.result?.rate || -1}
             disabled={status !== InterviewStatus.InProgress}
             key={q.id}
             onInterviewNoteChange={(v) => handleChangeInterviewNote(q, v)}
             onRateChange={(v) => handleChangeRate(q, v)}
           />
         ))}
+      </div>
+
+      <div className="mt-4">
+        Итоговая оценка: {totalResult} {getTotalResultEmodj(totalResult)}
       </div>
 
       <textarea
