@@ -19,6 +19,7 @@ import { arrayMoveImmutable } from "array-move";
 import AddQuestionTemplateModal, {
   AddQuestionTemplateModalProps,
 } from "./add-question-template-modal";
+import { useUser } from "@/context/user";
 
 export type TemplateProps = {
   initTemplateData: TemplateWithQuestionsDTO;
@@ -41,6 +42,9 @@ export default function Template({ initTemplateData }: TemplateProps) {
   const [questions, setQuestions] = useState<TemplateQuestionDTO[]>(() =>
     getQuestionsInOrder(initTemplateData)
   );
+
+  const user = useUser();
+  const isDisabled = user?.id !== template.user.id;
 
   useEffect(() => {
     let flag = true;
@@ -128,6 +132,7 @@ export default function Template({ initTemplateData }: TemplateProps) {
         <input
           className="w-1/2 ml-4 border border-gray-300 rounded px-3 py-1 focus:outline-none focus:border-blue-500"
           value={template.name}
+          disabled={isDisabled}
           onChange={handleChangeName}
         />
       </label>
@@ -138,6 +143,7 @@ export default function Template({ initTemplateData }: TemplateProps) {
           type="checkbox"
           className="ml-4 form-checkbox text-indigo-600 h-5 w-5"
           checked={template.isPublic}
+          disabled={isDisabled}
           onChange={handleChangeIsPublic}
         />
       </label>
@@ -151,6 +157,7 @@ export default function Template({ initTemplateData }: TemplateProps) {
 
       <TemplateQuestions
         questions={questions}
+        disabled={isDisabled}
         onSortEnd={handleSortEnd}
         onDelete={handleQuestionDelete}
       />

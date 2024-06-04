@@ -4,9 +4,10 @@ import { useRouter } from "next/navigation";
 import InterviewCard from "./interview-card";
 import { InterviewStatus } from "@/lib/types";
 import routes from "@/constants/routes";
+import { InterviewDTO } from "@/lib/actions";
 
 export type InterviewsListProps = {
-  interviews: { id: string; date: string; status: InterviewStatus }[];
+  interviews: Omit<InterviewDTO, 'result' | 'isResultPublished'>[];
 };
 
 export default function InterviewsList({ interviews }: InterviewsListProps) {
@@ -16,7 +17,8 @@ export default function InterviewsList({ interviews }: InterviewsListProps) {
     <div className="grid grid-cols-3 gap-4">
       {interviews.map((interview) => (
         <InterviewCard
-          candidateFIO="НЕТ ФИО"
+          candidateFIO={`${interview.candidate.surname} ${interview.candidate.name}`}
+          templateName={interview.template.name}
           date={interview.date}
           status={interview.status}
           key={interview.id}

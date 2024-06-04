@@ -23,21 +23,41 @@ export default function SearchTemplates({
     const f = async () => {
       setIsLoading(true);
 
-      const res = await getTemplates({
+      const publicTemplates = await getTemplates({
         name: inputValue,
         isPublic: "true",
       });
 
-      if (!isRequestError(res)) {
-        const newOptions = res.map((el) => ({
-          label: el.name,
-          value: el.id,
-        }));
-
-        setOptions(newOptions);
-      }
+      const privateTemplates = await getTemplates({
+        name: inputValue,
+        isPublic: "false",
+      });
 
       setIsLoading(false);
+
+      if (isRequestError(publicTemplates) || isRequestError(privateTemplates)) {
+        return;
+      }
+
+      const seen = new Set();
+
+      const merged = [...publicTemplates, ...privateTemplates].filter(
+        (item) => {
+          if (seen.has(item.id)) {
+            return false;
+          }
+
+          seen.add(item.id);
+          return true;
+        }
+      );
+
+      const newOptions = merged.map((el) => ({
+        label: el.name,
+        value: el.id,
+      }));
+
+      setOptions(newOptions);
     };
 
     f();

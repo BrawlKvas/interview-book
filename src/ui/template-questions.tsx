@@ -6,10 +6,11 @@ const SortableItem = SortableElement<QuestionCardProps>(QuestionCard);
 
 export type TemplateQuestionsProps = {
   questions: TemplateQuestionDTO[];
+  disabled?: boolean;
   onDelete?: (id: string) => void;
 };
 
-function TemplateQuestions({ questions, onDelete }: TemplateQuestionsProps) {
+function TemplateQuestions({ questions, disabled, onDelete }: TemplateQuestionsProps) {
   return (
     <div className="flex flex-col gap-y-4">
       {questions.map((question, index) => (
@@ -17,7 +18,8 @@ function TemplateQuestions({ questions, onDelete }: TemplateQuestionsProps) {
           text={question.question.name}
           index={index}
           key={question.id}
-          className="cursor-move"
+          className={disabled ? 'auto' : "cursor-move"}
+          disabled={disabled}
           onDelete={() => onDelete?.(question.id)}
         />
       ))}

@@ -237,6 +237,7 @@ export type TemplateDTO = {
   isPublic: boolean;
   name: string;
   order: string[];
+  user: UserDTO;
 };
 
 export type TemplateQuestionDTO = {
@@ -380,7 +381,7 @@ export async function createInterview(payload: {
 }
 
 export async function getInterviews() {
-  return get<{ id: string; date: string; status: InterviewStatus }[]>(
+  return get<Omit<InterviewDTO, 'result' | 'isResultPublished'>[]>(
     "/interview/history/all-interviews"
   );
 }

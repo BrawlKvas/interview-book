@@ -6,6 +6,7 @@ import Tag from "./tag";
 
 export type InterviewCardProps = {
   candidateFIO: string;
+  templateName: string;
   date: string;
   status: InterviewStatus;
   onClick?: VoidFunction;
@@ -20,6 +21,7 @@ const STATUS_COLORS = {
 
 export default function InterviewCard({
   candidateFIO,
+  templateName,
   date,
   status,
   onClick,
@@ -38,18 +40,11 @@ export default function InterviewCard({
       )}
       onClick={onClick}
     >
-      <div className="flex justify-between items-start mb-2">
+      <div className="flex justify-between items-start">
         <div className="font-semibold text-lg">{candidateFIO}</div>
-        {onDelete && (
-          <button
-            className="text-red-500 hover:text-red-700 ml-2"
-            onClick={handleDelete}
-          >
-            <TrashIcon />
-          </button>
-        )}
+        <Tag text={status} color={STATUS_COLORS[status]} />
       </div>
-      <Tag text={status} color={STATUS_COLORS[status]} />
+      <div className="text-m">Шаблон: &quot;{templateName}&quot;</div>
       <div className="text-gray-600 mt-2 mb-2">
         {new Date(date).toLocaleDateString()}
       </div>
