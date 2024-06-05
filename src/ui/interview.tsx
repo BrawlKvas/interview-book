@@ -4,13 +4,14 @@ import {
   InterviewDTO,
   addInterviewResult,
   getInterviewById,
+  updateInterviewFinalFeedback,
   updateInterviewResult,
   updateInterviewStatus,
 } from "@/lib/actions";
 import InterviewQuestion from "./interview-question";
 import Tag from "./tag";
 import { InterviewStatus } from "@/lib/types";
-import { useEffect, useMemo, useState } from "react";
+import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
 import { isRequestError } from "@/lib/utils";
 
 type InterviewProps = {
@@ -185,6 +186,15 @@ export default function Interview({ initInterviewData }: InterviewProps) {
     }
   };
 
+  const handleFinalFeedback: ChangeEventHandler<HTMLTextAreaElement> = async ({ target }) => {
+    setInterview(prev => ({
+      ...prev,
+      finalFeedback: target.value,
+    }));
+    await updateInterviewFinalFeedback(interview.id, target.value);
+    setIsValid(false);
+  };
+
   return (
     <>
       <div className="mb-4 flex gap-4 items-center">
@@ -231,6 +241,8 @@ export default function Interview({ initInterviewData }: InterviewProps) {
         className="w-full mt-4 p-4 shadow-md rounded-md border-2"
         placeholder="Заключение"
         rows={4}
+        value={interview.finalFeedback || ''}
+        onChange={handleFinalFeedback}
       ></textarea>
     </>
   );

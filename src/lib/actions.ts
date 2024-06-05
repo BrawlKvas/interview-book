@@ -366,6 +366,7 @@ export type InterviewDTO = {
   result: InterviewResultDTO[];
   candidate?: CandidateDTO;
   date: string;
+  finalFeedback?: string;
 };
 
 export async function createInterview(payload: {
@@ -416,6 +417,12 @@ export async function updateInterviewResult(body: {
   interviewNote: string;
 }) {
   await patch("/interview/update-question-result", body);
+
+  revalidatePath("/interviews");
+}
+
+export async function updateInterviewFinalFeedback(interviewId: string, finalFeedback: string) {
+  await patch("/interview/feedback/update", { interviewId, finalFeedback });
 
   revalidatePath("/interviews");
 }
