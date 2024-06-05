@@ -7,6 +7,8 @@ export type RequestError = {
   };
 };
 
+const isEnableLog = process.env.ENABLE_LOG === "true";
+
 const API_HOST = process.env.USE_MOCKS
   ? process.env.SERVER_MOCKS_HOST
   : process.env.API_HOST;
@@ -22,6 +24,10 @@ export async function request<T extends Object>(
   try {
     const session = getSession();
 
+    if (isEnableLog) {
+      console.log({ type: 'REQUEST', url: API_HOST + url, method: init.method || 'GET', body: init.body });
+    }
+
     const res = await fetch(API_HOST + url, {
       ...init,
       headers: {
@@ -33,8 +39,12 @@ export async function request<T extends Object>(
 
     const data = (await (parseRule === "json" ? res.json() : res.text())) as T;
 
+    if (isEnableLog) {
+      console.log({ type: 'RESPONSE', url: API_HOST + url, data });
+    }
+
     if (!res.ok) {
-      return {
+      const requestError = {
         error: {
           message:
             "message" in data ? (data.message as string) : res.statusText,
@@ -42,10 +52,20 @@ export async function request<T extends Object>(
             "statusCode" in data ? (data.statusCode as number) : res.status,
         },
       };
+
+      if (isEnableLog) {
+        console.log({ type: 'RESPONSE_ERROR', url: API_HOST + url, error: requestError });
+      }
+
+      return requestError
     }
 
     return data;
   } catch (error) {
+    if (isEnableLog) {
+      console.log({ type: 'FETCH_ERROR', url: API_HOST + url, error });
+    }
+
     return {
       error: {
         message: "Failed to fetch",
