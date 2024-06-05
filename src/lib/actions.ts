@@ -364,7 +364,7 @@ export type InterviewDTO = {
   status: InterviewStatus;
   template: TemplateWithQuestionsDTO;
   result: InterviewResultDTO[];
-  candidate: CandidateDTO;
+  candidate?: CandidateDTO;
   date: string;
 };
 

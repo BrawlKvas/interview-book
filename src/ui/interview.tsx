@@ -189,7 +189,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
     <>
       <div className="mb-4 flex gap-4 items-center">
         <h1 className="text-2xl font-bold text-slate-700">
-          Интервью - &quot;{candidate.name} {candidate.surname}&quot; (
+          Интервью - &quot;{candidate?.name} {candidate?.surname}&quot; (
           {interviewDate})
         </h1>
         <Tag text={status} color={STATUS_COLORS[status]} />

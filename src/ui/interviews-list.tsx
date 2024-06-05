@@ -17,7 +17,7 @@ export default function InterviewsList({ interviews }: InterviewsListProps) {
     <div className="grid grid-cols-3 gap-4">
       {interviews.map((interview) => (
         <InterviewCard
-          candidateFIO={`${interview.candidate.surname} ${interview.candidate.name}`}
+          candidateFIO={`${interview.candidate?.surname} ${interview.candidate?.name}`}
           templateName={interview.template.name}
           date={interview.date}
           status={interview.status}
