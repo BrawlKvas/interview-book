@@ -133,7 +133,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
 
       await addInterviewResult({
         interviewId,
-        questionId: question.id,
+        questionId: question.question.id,
         rate,
         interviewNote: "",
       });
@@ -177,7 +177,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
 
       await addInterviewResult({
         interviewId,
-        questionId: question.id,
+        questionId: question.question.id,
         rate: -1,
         interviewNote,
       });

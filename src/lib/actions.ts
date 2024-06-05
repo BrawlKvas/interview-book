@@ -402,7 +402,7 @@ export async function updateInterviewStatus(
 
 export async function addInterviewResult(body: {
   interviewId: string;
-  questionId: string; // TODO Или number?
+  questionId: number;
   rate: number;
   interviewNote: string;
 }) {
