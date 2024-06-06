@@ -5,6 +5,7 @@ const routes = {
   questions: "/questions",
   candidates: "/candidates",
   interviews: "/interviews",
+  interviewsComparison: '/interviews/comparison',
 };
 
 export default routes;

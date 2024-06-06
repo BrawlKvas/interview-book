@@ -9,6 +9,7 @@ export type InterviewCardProps = {
   templateName: string;
   date: string;
   status: InterviewStatus;
+  selected?: boolean;
   onClick?: VoidFunction;
   onDelete?: VoidFunction;
 };
@@ -24,6 +25,7 @@ export default function InterviewCard({
   templateName,
   date,
   status,
+  selected,
   onClick,
   onDelete,
 }: InterviewCardProps) {
@@ -36,7 +38,8 @@ export default function InterviewCard({
     <div
       className={clsx(
         "bg-white shadow-md rounded-md p-5",
-        onClick && "cursor-pointer hover:shadow-lg transition-shadow"
+        onClick && "cursor-pointer hover:shadow-lg transition-shadow",
+        selected && "border-2 border-blue-400"
       )}
       onClick={onClick}
     >

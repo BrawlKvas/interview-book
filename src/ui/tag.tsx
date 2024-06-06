@@ -15,7 +15,7 @@ export type TagProps = {
 export default function Tag({ text, color = "blue", onDelete }: TagProps) {
   return (
     <span
-      className={`inline-flex gap-1 align-center ${COLOR_STYLES[color]} px-2 py-1 rounded-full`}
+      className={`inline-flex gap-1 align-center ${COLOR_STYLES[color]} px-2 py-1 rounded-full whitespace-nowrap`}
     >
       {text}
 
