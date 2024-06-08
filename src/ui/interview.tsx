@@ -13,6 +13,7 @@ import Tag from "./tag";
 import { InterviewStatus } from "@/lib/types";
 import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
 import { isRequestError } from "@/lib/utils";
+import ClipboardIcon from "./icons/clipboard";
 
 type InterviewProps = {
   initInterviewData: InterviewDTO;
@@ -201,6 +202,13 @@ export default function Interview({ initInterviewData }: InterviewProps) {
     setIsValid(false);
   };
 
+  const handleShare = () => {
+    //TODO Добавить запрос к серверу
+    navigator.clipboard.writeText(
+      `${window.location.origin}/interviews/${interviewId}`
+    );
+  };
+
   return (
     <>
       <div className="mb-4 flex gap-4 items-center">
@@ -209,6 +217,15 @@ export default function Interview({ initInterviewData }: InterviewProps) {
           {interviewDate})
         </h1>
         <Tag text={status} color={STATUS_COLORS[status]} />
+
+        {status === InterviewStatus.Completed && (
+          <button
+            className="flex gap-2 border-slate-400 hover:border-slate-500 border-2 py-2 px-4 rounded border-dashed"
+            onClick={handleShare}
+          >
+            Поделиться интервью <ClipboardIcon />
+          </button>
+        )}
 
         {status !== InterviewStatus.Completed && (
           <button
