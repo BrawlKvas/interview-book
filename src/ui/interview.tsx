@@ -43,25 +43,29 @@ export default function Interview({ initInterviewData }: InterviewProps) {
     status,
     candidate,
     date: interviewDate,
-    template: { questions },
+    template: { questions: templateQuestions },
     result = [],
   } = interview;
 
   const questionsWithResult = useMemo(() => {
-    return questions.map((question) => {
+    return templateQuestions.map((q) => {
       const questionResult = result.find(
-        (res) => res.question.id === question.id
+        (r) => r.question.id === q.question.id
       );
-      return { ...question, result: questionResult || null };
+      return { ...q, result: questionResult || null };
     });
-  }, [questions, result]);
+  }, [templateQuestions, result]);
 
-  const totalResult = useMemo(
-    () =>
-      result.reduce((acc, r) => (r.rate === -1 ? acc : r.rate + acc), 0) /
-      (result.length || 1),
-    [result]
-  );
+  const totalResult = useMemo(() => {
+    const filteredResult = result.filter((r) => r.rate !== -1);
+
+    return (
+      filteredResult.reduce(
+        (acc, r) => (r.rate === -1 ? acc : r.rate + acc),
+        0
+      ) / (filteredResult.length || 1)
+    );
+  }, [result]);
 
   useEffect(() => {
     let flag = true;
@@ -124,7 +128,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
           ...(prev.result || []),
           {
             id: "temp",
-            question: question,
+            question: question.question,
             rate,
             interviewNote: "",
           },
@@ -168,7 +172,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
           ...prev.result,
           {
             id: "temp",
-            question: question,
+            question: question.question,
             rate: -1,
             interviewNote,
           },
@@ -186,8 +190,10 @@ export default function Interview({ initInterviewData }: InterviewProps) {
     }
   };
 
-  const handleFinalFeedback: ChangeEventHandler<HTMLTextAreaElement> = async ({ target }) => {
-    setInterview(prev => ({
+  const handleFinalFeedback: ChangeEventHandler<HTMLTextAreaElement> = async ({
+    target,
+  }) => {
+    setInterview((prev) => ({
       ...prev,
       finalFeedback: target.value,
     }));
@@ -241,7 +247,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
         className="w-full mt-4 p-4 shadow-md rounded-md border-2"
         placeholder="Заключение"
         rows={4}
-        value={interview.finalFeedback || ''}
+        value={interview.finalFeedback || ""}
         onChange={handleFinalFeedback}
       ></textarea>
     </>

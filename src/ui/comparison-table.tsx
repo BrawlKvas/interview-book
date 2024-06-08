@@ -67,7 +67,8 @@ export default function ComparisonTable({
                         }
                       )}
                     >
-                      {result.result1} {RESULT_EMODJ[result.result1]}
+                      {result.result1 === -1 ? "-" : result.result1}{" "}
+                      {RESULT_EMODJ[result.result1]}
                     </td>
                     <td
                       className={clsx(
@@ -78,7 +79,8 @@ export default function ComparisonTable({
                         }
                       )}
                     >
-                      {result.result2} {RESULT_EMODJ[result.result2]}
+                      {result.result2 === -1 ? "-" : result.result2}{" "}
+                      {RESULT_EMODJ[result.result2]}
                     </td>
                   </tr>
                 ))}
