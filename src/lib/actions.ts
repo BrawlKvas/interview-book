@@ -353,7 +353,7 @@ export async function updateTemplateName(id: string, name: string) {
 
 export type InterviewResultDTO = {
   id: string;
-  question: { id: string }; // TODO
+  question: { id: number; name: string; hint?: string; isPublic?: boolean };
   rate: number;
   interviewNote: string;
 };
