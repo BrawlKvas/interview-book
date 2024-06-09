@@ -165,8 +165,6 @@ export default function Interview({ initInterviewData }: InterviewProps) {
         rate: question.result.rate,
         interviewNote,
       });
-
-      setIsValid(false);
     } else {
       setInterview((prev) => ({
         ...prev,
@@ -187,8 +185,6 @@ export default function Interview({ initInterviewData }: InterviewProps) {
         rate: -1,
         interviewNote,
       });
-
-      setIsValid(false);
     }
   };
 
@@ -200,7 +196,6 @@ export default function Interview({ initInterviewData }: InterviewProps) {
       finalFeedback: target.value,
     }));
     await updateInterviewFinalFeedback(interview.id, target.value);
-    setIsValid(false);
   };
 
   const handleShare = () => {
@@ -249,7 +244,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
               hint: q.question.hint,
             }}
             interviewNote={q.result?.interviewNote || ""}
-            rate={q.result?.rate || -1}
+            rate={q.result?.rate === undefined ? -1 : q.result.rate}
             disabled={status !== InterviewStatus.InProgress}
             key={q.id}
             onInterviewNoteChange={(v) => handleChangeInterviewNote(q, v)}
