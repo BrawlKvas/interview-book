@@ -10,6 +10,7 @@ import CandidateCard from "./candidate-card";
 import CandidateModal, { CandidateModalProps } from "./candidate-modal";
 import { useState } from "react";
 import EmptyPlate from "./empty-plate";
+import ConfirmationModal from "@/ui/confirmation-modal";
 
 export type CandidatesListProps = {
   candidates: CandidateDTO[];
@@ -17,6 +18,8 @@ export type CandidatesListProps = {
 
 export default function CandidatesList({ candidates }: CandidatesListProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [currentCandidate, setCurrentCandidate] = useState<number | null>(null);
   const [selectedCandidate, setSelectedCandidate] = useState<CandidateDTO>();
 
   const handleSubmit: CandidateModalProps["onSubmit"] = (values) => {
@@ -33,6 +36,25 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
   const handleClose = () => {
     setIsOpen(false);
     setSelectedCandidate(undefined);
+  };
+
+  const handleDelete = (id: number) => {
+    setCurrentCandidate(id);
+    setIsConfirmOpen(true);
+  };
+
+  const handleCancel = () => {
+    setIsConfirmOpen(false);
+    setCurrentCandidate(null);
+  };
+
+  const handleConfirm = () => {
+    if (currentCandidate) {
+      deleteCandidate(currentCandidate);
+    }
+
+    setIsConfirmOpen(false);
+    setCurrentCandidate(null);
   };
 
   return (
@@ -59,7 +81,7 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
               setSelectedCandidate(candidate);
               setIsOpen(true);
             }}
-            onDelete={() => deleteCandidate(candidate.id)}
+            onDelete={() => handleDelete(candidate.id)}
           />
         ))}
       </div>
@@ -69,6 +91,14 @@ export default function CandidatesList({ candidates }: CandidatesListProps) {
         initialValue={selectedCandidate}
         onSubmit={handleSubmit}
         onClose={handleClose}
+      />
+
+      <ConfirmationModal
+        isOpen={isConfirmOpen}
+        title="Удалить кандидата?"
+        message="Удаление кандидата повлечет за собой удаление всех связанных с ним интервью"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
       />
     </>
   );
