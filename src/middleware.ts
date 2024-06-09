@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   if (
     !session &&
     request.nextUrl.pathname !== routes.signIn &&
-    request.nextUrl.pathname !== routes.signUp
+    request.nextUrl.pathname !== routes.signUp && !request.nextUrl.pathname.startsWith(routes.interviews + '/')
   ) {
     return Response.redirect(new URL(routes.signIn, request.url));
   }

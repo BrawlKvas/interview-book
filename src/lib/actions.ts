@@ -426,3 +426,12 @@ export async function updateInterviewFinalFeedback(interviewId: string, finalFee
 
   revalidatePath("/interviews");
 }
+
+export async function updateInterviewVisibility(id: string, visibility: boolean) {
+  const searchParams = new URLSearchParams({
+    id,
+    visibility: String(visibility),
+  });
+
+  await patch(`/interview/visibility?${searchParams.toString()}`, {});
+}

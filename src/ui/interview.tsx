@@ -7,6 +7,7 @@ import {
   updateInterviewFinalFeedback,
   updateInterviewResult,
   updateInterviewStatus,
+  updateInterviewVisibility,
 } from "@/lib/actions";
 import InterviewQuestion from "./interview-question";
 import Tag from "./tag";
@@ -203,7 +204,8 @@ export default function Interview({ initInterviewData }: InterviewProps) {
   };
 
   const handleShare = () => {
-    //TODO Добавить запрос к серверу
+    updateInterviewVisibility(interview.id, true);
+
     navigator.clipboard.writeText(
       `${window.location.origin}/interviews/${interviewId}`
     );

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import EmptyPlate from "./empty-plate";
 import { useUser } from "@/context/user";
+import ConfirmationModal from "@/ui/confirmation-modal";
 
 export type QuestionsListProps = {
   questions: QuestionDTO[];
@@ -18,6 +19,9 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
   const [selectedQuestion, setSelectedQuestion] = useState<QuestionDTO | null>(
     null
   );
+
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState<number | null>(null);
 
   const user = useUser();
 
@@ -39,9 +43,23 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
     setSelectedQuestion(null);
   };
 
+  const handleCancel = () => {
+    setConfirmModalOpen(false);
+    setCurrentQuestion(null);
+  };
+
+  const handleConfirm = async () => {
+    handleCancel();
+
+    if (currentQuestion) {
+      await deleteQuestion(currentQuestion);
+      replace(`/questions?${searchParams.toString()}`);
+    }
+  };
+
   const handleDelete = async (id: number) => {
-    await deleteQuestion(id);
-    replace(`/questions?${searchParams.toString()}`);
+    setCurrentQuestion(id);
+    setConfirmModalOpen(true);
   };
 
   if (questions.length === 0) {
@@ -79,6 +97,14 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
         }}
         onClose={() => setSelectedQuestion(null)}
         onSubmit={handleEditQuestion}
+      />
+
+      <ConfirmationModal
+        isOpen={isConfirmModalOpen}
+        title="Удалить вопрос?"
+        message="Вы уверены, что хотите удалить этот вопрос?"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
       />
     </div>
   );
