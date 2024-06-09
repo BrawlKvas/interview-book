@@ -31,7 +31,7 @@ export default async function Page({
   return (
     <>
       <QuestionsFilters selectedTags={tags} />
-      <QuestionsList questions={questions} />
+      <QuestionsList questions={questions.reverse()} />
     </>
   );
 }
