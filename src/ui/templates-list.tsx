@@ -108,7 +108,7 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
       <ConfirmationModal
         isOpen={isConfirmModalOpen}
         title="Удалить шаблон?"
-        message="Вы уверены, что хотите удалить этот шаблон?"
+        message="Вы уверены, что хотите удалить этот шаблон? Это повлечет за собой удаление всех интервью связанных с этим шаблоном"
         onConfirm={handleConfirm}
         onCancel={handleCancel}
       />
