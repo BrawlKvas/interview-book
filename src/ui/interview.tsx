@@ -15,6 +15,7 @@ import { InterviewStatus } from "@/lib/types";
 import { ChangeEventHandler, useEffect, useMemo, useState } from "react";
 import { isRequestError } from "@/lib/utils";
 import ClipboardIcon from "./icons/clipboard";
+import clsx from "clsx";
 
 type InterviewProps = {
   initInterviewData: InterviewDTO;
@@ -258,7 +259,10 @@ export default function Interview({ initInterviewData }: InterviewProps) {
       </div>
 
       <textarea
-        className="w-full mt-4 p-4 shadow-md rounded-md border-2"
+        className={clsx(
+          "w-full mt-4 p-4 shadow-md rounded-md border-2 bg-white",
+          status !== InterviewStatus.InProgress && "cursor-not-allowed"
+        )}
         placeholder="Заключение"
         rows={4}
         value={interview.finalFeedback || ""}

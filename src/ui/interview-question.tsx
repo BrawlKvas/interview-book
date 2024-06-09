@@ -1,5 +1,6 @@
 "use client";
 
+import clsx from "clsx";
 import QuestionCard from "./question-card";
 
 const OPTIONS = [
@@ -41,7 +42,10 @@ export default function InterviewQuestion({
 
       <textarea
         rows={4}
-        className="p-2 shadow-md rounded-md resize-none text-sm"
+        className={clsx(
+          "p-2 shadow-md rounded-md resize-none text-sm bg-white",
+          disabled && "cursor-not-allowed"
+        )}
         placeholder="Комментарий"
         value={interviewNote}
         disabled={disabled}
@@ -49,7 +53,10 @@ export default function InterviewQuestion({
       ></textarea>
 
       <select
-        className="w-24 p-2 shadow-md rounded-md"
+        className={clsx(
+          "w-24 p-2 shadow-md rounded-md bg-white",
+          disabled && "cursor-not-allowed"
+        )}
         value={rate}
         disabled={disabled}
         onChange={(e) => onRateChange?.(+e.target.value)}
