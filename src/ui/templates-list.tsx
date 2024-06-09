@@ -7,6 +7,7 @@ import CreateTemplateModal from "./create-template-modal";
 import { ChangeEventHandler, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import EmptyPlate from "./empty-plate";
+import ConfirmationModal from "./confirmation-modal";
 
 export type TemplatesListProps = {
   templates: TemplateDTO[];
@@ -18,6 +19,8 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
   const searchParams = useSearchParams();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isConfirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [currentTemplate, setCurrentTemplate] = useState<string | null>(null);
 
   const handleQuestionNameChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value },
@@ -39,6 +42,24 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
     params.set("isPublic", String(e.target.checked));
 
     replace(`${pathname}?${params.toString()}`);
+  };
+
+  const handleCancel = () => {
+    setConfirmModalOpen(false);
+    setCurrentTemplate(null);
+  };
+
+  const handleConfirm = async () => {
+    handleCancel();
+
+    if (currentTemplate) {
+      await deleteTemplate(currentTemplate);
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    setCurrentTemplate(id);
+    setConfirmModalOpen(true);
   };
 
   return (
@@ -75,7 +96,7 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
         {templates.map((template) => (
           <TemplateCard
             name={template.name}
-            onDelete={() => deleteTemplate(template.id)}
+            onDelete={() => handleDelete(template.id)}
             onClick={() => push(`/templates/${template.id}`)}
             key={template.id}
           />
@@ -83,6 +104,14 @@ export default function TemplatesList({ templates }: TemplatesListProps) {
       </div>
 
       <CreateTemplateModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+
+      <ConfirmationModal
+        isOpen={isConfirmModalOpen}
+        title="Удалить шаблон?"
+        message="Вы уверены, что хотите удалить этот шаблон?"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+      />
     </>
   );
 }
