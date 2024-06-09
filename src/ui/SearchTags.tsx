@@ -57,7 +57,9 @@ export default function SearchTags({
   }, [inputValue, isAllowCreate]);
 
   const handleChange: AutocompleteProps["onChange"] = (e) => {
-    setInputValue(e.target.value);
+    setInputValue((prev) =>
+      e.target.value.length > 32 ? prev : e.target.value
+    );
   };
 
   const handleSelect: AutocompleteProps["onSelect"] = async (value) => {

@@ -265,6 +265,7 @@ export default function Interview({ initInterviewData }: InterviewProps) {
         placeholder="Заключение"
         rows={4}
         value={interview.finalFeedback || ""}
+        disabled={status !== InterviewStatus.InProgress}
         onChange={handleFinalFeedback}
       ></textarea>
     </>

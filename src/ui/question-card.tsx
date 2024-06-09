@@ -52,7 +52,7 @@ export default function QuestionCard({
       </div>
       {hint && (
         <details className="mt-2" onClick={(e) => e.stopPropagation()}>
-          <summary>Вспомогающая информация</summary>
+          <summary>Вспомогательная информация</summary>
           <p className="mt-2">{hint}</p>
         </details>
       )}

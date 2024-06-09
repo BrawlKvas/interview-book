@@ -74,6 +74,7 @@ export default function QuestionsList({ questions }: QuestionsListProps) {
         initialValue={{
           text: selectedQuestion?.name,
           tags: selectedQuestion?.tags.map((tag) => tag.id),
+          hint: selectedQuestion?.hint || "",
           isPublic: selectedQuestion?.isPublic,
         }}
         onClose={() => setSelectedQuestion(null)}
